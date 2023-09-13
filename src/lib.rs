@@ -2,12 +2,17 @@ pub mod api;
 mod entity;
 mod error;
 
+use std::io::Read;
+use std::path::Path;
 pub use error::*;
 
 pub use entity::*;
 use hyper::http::request::Builder;
-use hyper::{Body, Method};
+use hyper::{Body, Method, Request};
+use hyper::header::CONTENT_TYPE;
 use hyper_tls::HttpsConnector;
+use multipart::client::lazy::Multipart;
+use multipart::server::MultipartData;
 
 use serde_json::{json, Value};
 
@@ -120,6 +125,23 @@ impl SlackClient {
         println!("hoge4");
         Self::http_response(response).await
     }
+    pub(crate) async fn http_post_data<R>(&self, url: &str, multipart: Multipart<'_, '_>) -> SlackApiResponse<R>
+        where
+            R: for<'de> serde::Deserialize<'de>,
+    {
+        let mut build = builder_file(url, self.context.token.clone().unwrap_or_default().as_str()).method(Method::POST);
+        let mut s = "".to_string();
+        let mut multipart = multipart;
+        let mut aa = multipart.prepare().unwrap();
+        build = build.header("Content-Type", format!("multipart/form-data; boundary={}", aa.boundary()));
+        aa.read_to_string(&mut s).unwrap();
+        let request = build.body(Body::from(s)).unwrap();
+        let response = hyper::Client::builder()
+            .build(HttpsConnector::new())
+            .request(request)
+            .await;
+        Self::http_response(response).await
+    }
 }
 
 fn builder(url: &str, token: &str) -> Builder {
@@ -128,6 +150,16 @@ fn builder(url: &str, token: &str) -> Builder {
         build = build.header("Authorization", format!("Bearer {}", token))
     }
     build.header("Content-type", "application/json; charset=UTF-8")
+}
+
+fn builder_file(url: &str, token: &str) -> Builder {
+    let mut build = hyper::Request::builder().uri(format!("https://slack.com/api/{}", url));
+    if !token.is_empty() {
+        build = build.header("Authorization", format!("Bearer {}", token))
+    }
+    build
+    // build.header(CONTENT_TYPE, "multipart/form-data")
+    // build.header(CONTENT_TYPE, "application/x-www-form-urlencoded")
 }
 
 fn get_error_value(value: &Value) -> Vec<String> {
