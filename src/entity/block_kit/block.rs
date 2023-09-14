@@ -1,4 +1,4 @@
-use crate::{BlockElementPlaneTextInput, CompositionObjectText, SlackBlockElement};
+use crate::{BlockElementImage, BlockElementPlaneTextInput, CompositionObjectText, SlackBlockElement, SlackBlockKitCompositionObject};
 use serde_derive::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -14,6 +14,7 @@ pub enum SlackBlock {
     Section(SlackBlockSection),
     Video(SlackBlockVideo),
 }
+
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SlackBlockAction {
@@ -37,27 +38,73 @@ impl Default for SlackBlockAction {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SlackBlockContext {
     #[serde(rename = "type")]
-    pub block_type: String,
-    pub elements: Vec<SlackBlockElement>,
+    block_type: String,
+    elements: Vec<SlackBlockContentFieldElement>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub block_id: Option<String>,
+    block_id: Option<String>,
 }
 
 impl Default for SlackBlockContext {
     fn default() -> Self {
         SlackBlockContext {
             block_type: "context".to_string(),
-
             elements: vec![],
             block_id: None,
         }
     }
 }
+
+impl SlackBlockContext {
+    pub fn new() -> SlackBlockContext {
+        SlackBlockContext::default()
+    }
+    pub fn element<E: Into<SlackBlockContentFieldElement>>(self, element: E) -> SlackBlockContext {
+        let mut block = self;
+        block.elements.push(element.into());
+        block
+    }
+}
+
 impl From<SlackBlockContext> for SlackBlock {
     fn from(value: SlackBlockContext) -> Self {
         SlackBlock::Context(value)
     }
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SlackBlockContentFieldElement {
+    Image(BlockElementImage),
+    Text(CompositionObjectText),
+}
+
+impl From<BlockElementImage> for SlackBlockContentFieldElement {
+    fn from(value: BlockElementImage) -> Self {
+        SlackBlockContentFieldElement::Image(value)
+    }
+}
+
+impl From<CompositionObjectText> for SlackBlockContentFieldElement {
+    fn from(value: CompositionObjectText) -> Self {
+        SlackBlockContentFieldElement::Text(value)
+    }
+}
+
+
+impl SlackBlockContext {
+    pub fn new_text<S: Into<String>>(text: S) -> SlackBlockContext {
+        SlackBlockContext {
+            elements: vec![
+                CompositionObjectText {
+                    text: text.into(),
+                    ..CompositionObjectText::default()
+                }.into()
+            ],
+            ..SlackBlockContext::default()
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SlackBlockDivider {
     #[serde(rename = "type")]
@@ -86,18 +133,34 @@ pub struct SlackBlockFile {
     pub block_id: Option<String>,
 }
 
+impl SlackBlockFile {
+    pub fn new() -> SlackBlockFile {
+        SlackBlockFile::default()
+    }
+    pub fn external_id<S: Into<String>>(self, external_id: S) -> SlackBlockFile {
+        let mut block = self;
+        block.external_id = external_id.into();
+        block
+    }
+}
+
 impl Default for SlackBlockFile {
     fn default() -> Self {
         SlackBlockFile {
             block_type: "file".to_string(),
 
             external_id: "".to_string(),
-            source: "".to_string(),
+            source: "remote".to_string(),
             block_id: None,
         }
     }
 }
 
+impl From<SlackBlockFile> for SlackBlock {
+    fn from(value: SlackBlockFile) -> Self {
+        SlackBlock::File(value)
+    }
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SlackBlockHeader {
     #[serde(rename = "type")]
@@ -111,17 +174,30 @@ impl Default for SlackBlockHeader {
     fn default() -> Self {
         SlackBlockHeader {
             block_type: "header".to_string(),
-
             text: Default::default(),
             block_id: None,
         }
     }
 }
+
+impl SlackBlockHeader {
+    pub fn new_text<S: Into<String>>(text: S) -> SlackBlockHeader {
+        SlackBlockHeader {
+            text: CompositionObjectText {
+                text: text.into(),
+                ..CompositionObjectText::default()
+            },
+            ..SlackBlockHeader::default()
+        }
+    }
+}
+
 impl From<SlackBlockHeader> for SlackBlock {
     fn from(value: SlackBlockHeader) -> Self {
         SlackBlock::Header(value)
     }
 }
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SlackBlockImage {
     #[serde(rename = "type")]

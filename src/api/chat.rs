@@ -1,6 +1,4 @@
-use crate::{
-    SlackApiResponse, SlackBlock, SlackClient,
-};
+use crate::{SlackApiResponse, SlackBlock, SlackClient};
 use serde_derive::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -14,32 +12,48 @@ pub struct SlackMessageAttachment {
 
 impl SlackClient {
     /// https://api.slack.com/methods/chat.delete
-    pub async fn chat_delete(&self, request: &SlackApiChatDeleteRequest) -> SlackApiResponse<SlackApiChatDeleteResponse> {
+    pub async fn chat_delete(
+        &self,
+        request: &SlackApiChatDeleteRequest,
+    ) -> SlackApiResponse<SlackApiChatDeleteResponse> {
         self.http_post("chat.delete", request).await
     }
     /// https://api.slack.com/methods/chat.deleteScheduledMessage
-    pub async fn chat_delete_scheduled_message(&self, request: &SlackApiChatDeleteScheduleMessageRequest) -> SlackApiResponse<SlackApiChatDeleteScheduleMessageResponse> {
+    pub async fn chat_delete_scheduled_message(
+        &self,
+        request: &SlackApiChatDeleteScheduleMessageRequest,
+    ) -> SlackApiResponse<SlackApiChatDeleteScheduleMessageResponse> {
         self.http_post("chat.deleteScheduledMessage", request).await
     }
     /// https://api.slack.com/methods/chat.getPermalink
-    pub async fn chat_get_permalink(&self, request: &SlackApiChatGetPermalinkRequest) -> SlackApiResponse<SlackApiChatGetPermalinkResponse> {
+    pub async fn chat_get_permalink(
+        &self,
+        request: &SlackApiChatGetPermalinkRequest,
+    ) -> SlackApiResponse<SlackApiChatGetPermalinkResponse> {
         self.http_post("chat.getPermalink", request).await
     }
     /// https://api.slack.com/methods/chat.meMessage
-    pub async fn chat_me_message(&self, request: &SlackApiChatMeMessageRequest) -> SlackApiResponse<SlackApiChatMeMessageResponse> {
+    pub async fn chat_me_message(
+        &self,
+        request: &SlackApiChatMeMessageRequest,
+    ) -> SlackApiResponse<SlackApiChatMeMessageResponse> {
         self.http_post("chat.meMessage", request).await
     }
     /// https://api.slack.com/methods/chat.postEphemeral
-    pub async fn chat_post_ephemeral(&self, request: &SlackApiChatPostEphemeralRequest) -> SlackApiResponse<SlackApiChatPostEphemeralResponse> {
+    /// あなただけに表示されています
+    pub async fn chat_post_ephemeral(
+        &self,
+        request: &SlackApiChatPostEphemeralRequest,
+    ) -> SlackApiResponse<SlackApiChatPostEphemeralResponse> {
         self.http_post("chat.postEphemeral", request).await
     }
 
     /// https://api.slack.com/methods/chat.postMessage
-    pub async fn chat_post_message(
+    pub async fn chat_post_message<B: Into<SlackApiChatPostMessageRequest>>(
         &self,
-        request: &SlackApiChatPostMessageRequest,
+        request: B,
     ) -> SlackApiResponse<SlackApiChatPostMessageResponse> {
-        self.http_post("chat.postMessage", request).await
+        self.http_post("chat.postMessage", &request.into()).await
     }
     /// https://api.slack.com/methods/chat.scheduleMessage
     pub async fn chat_schedule_message(
@@ -202,7 +216,7 @@ pub struct SlackApiChatPostMessageResponse {
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct SlackApiChatScheduleMessageRequest {
     pub channel: String,
-    pub post_at: i32,
+    pub post_at: u32,
     pub text: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub as_user: Option<bool>,
@@ -232,7 +246,7 @@ pub struct SlackApiChatScheduleMessageResponse {
     pub ok: bool,
     pub channel: String,
     pub scheduled_message_id: String,
-    pub post_at: String,
+    pub post_at: u32,
     pub message: Value,
 }
 
@@ -308,7 +322,6 @@ pub struct SlackApiChatScheduledMessagesListRequest {
     pub oldest: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub team_id: Option<String>,
-
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]

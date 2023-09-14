@@ -1,18 +1,17 @@
 pub mod api;
+mod builder;
 mod entity;
 mod error;
 
-use std::io::Read;
-use std::path::Path;
 pub use error::*;
+use std::io::Read;
 
+pub use builder::*;
 pub use entity::*;
 use hyper::http::request::Builder;
-use hyper::{Body, Method, Request};
-use hyper::header::CONTENT_TYPE;
+use hyper::{Body, Method};
 use hyper_tls::HttpsConnector;
 use multipart::client::lazy::Multipart;
-use multipart::server::MultipartData;
 
 use serde_json::{json, Value};
 
@@ -38,8 +37,8 @@ pub type SlackApiResponse<T> = Result<T, SlackError>;
 
 impl SlackClient {
     async fn http_response<R>(response: hyper::Result<hyper::Response<Body>>) -> SlackApiResponse<R>
-        where
-            R: for<'de> serde::Deserialize<'de>,
+    where
+        R: for<'de> serde::Deserialize<'de>,
     {
         let response = match response {
             Ok(v) => v,
@@ -63,8 +62,8 @@ impl SlackClient {
             Ok(v) => v,
             Err(e) => return Err(SlackSystemError::new(e.to_string()).into()),
         };
-        dbg!(&value);
-
+        // dbg!(&value);
+        //
         if let Some(ok) = value.get("ok") {
             if ok.as_bool() == Some(false) {
                 return Err(SlackApiError {
@@ -73,7 +72,7 @@ impl SlackClient {
                     warnings: None,
                     http_response_body: Some(http_response_body),
                 }
-                    .into());
+                .into());
             }
         }
 
@@ -85,9 +84,9 @@ impl SlackClient {
         url: &str,
         value: &P,
     ) -> SlackApiResponse<R>
-        where
-            P: serde::Serialize,
-            R: for<'de> serde::Deserialize<'de>,
+    where
+        P: serde::Serialize,
+        R: for<'de> serde::Deserialize<'de>,
     {
         let build = builder(url, token).method(Method::GET);
         let request = build.body(Body::from(json!(value).to_string())).unwrap();
@@ -109,31 +108,37 @@ impl SlackClient {
         // }))
     }
     pub(crate) async fn http_post<P, R>(&self, url: &str, value: &P) -> SlackApiResponse<R>
-        where
-            P: serde::Serialize,
-            R: for<'de> serde::Deserialize<'de>,
+    where
+        P: serde::Serialize,
+        R: for<'de> serde::Deserialize<'de>,
     {
-        println!("hoge1");
-        let build = builder(url, self.context.token.clone().unwrap_or_default().as_str()).method(Method::POST);
-        println!("hoge2 {}", serde_json::to_string(value).unwrap());
+        let build = builder(url, self.context.token.clone().unwrap_or_default().as_str())
+            .method(Method::POST);
+        // println!("hoge2 {}", serde_json::to_string(value).unwrap());
         let request = build.body(Body::from(json!(value).to_string())).unwrap();
-        println!("hoge3");
         let response = hyper::Client::builder()
             .build(HttpsConnector::new())
             .request(request)
             .await;
-        println!("hoge4");
         Self::http_response(response).await
     }
-    pub(crate) async fn http_post_data<R>(&self, url: &str, multipart: Multipart<'_, '_>) -> SlackApiResponse<R>
-        where
-            R: for<'de> serde::Deserialize<'de>,
+    pub(crate) async fn http_post_data<R>(
+        &self,
+        url: &str,
+        multipart: Multipart<'_, '_>,
+    ) -> SlackApiResponse<R>
+    where
+        R: for<'de> serde::Deserialize<'de>,
     {
-        let mut build = builder_file(url, self.context.token.clone().unwrap_or_default().as_str()).method(Method::POST);
+        let mut build = builder_file(url, self.context.token.clone().unwrap_or_default().as_str())
+            .method(Method::POST);
         let mut s = "".to_string();
         let mut multipart = multipart;
         let mut aa = multipart.prepare().unwrap();
-        build = build.header("Content-Type", format!("multipart/form-data; boundary={}", aa.boundary()));
+        build = build.header(
+            "Content-Type",
+            format!("multipart/form-data; boundary={}", aa.boundary()),
+        );
         aa.read_to_string(&mut s).unwrap();
         let request = build.body(Body::from(s)).unwrap();
         let response = hyper::Client::builder()

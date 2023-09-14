@@ -1,7 +1,6 @@
 use serde_derive::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-
 pub enum SlackBlockKitCompositionObject {
     ConfirmationDialog(CompositionObjectConfirmationDialog),
     ConversationFilter(CompositionObjectConversationFilter),
@@ -78,6 +77,7 @@ pub struct CompositionObjectText {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub varbatim: Option<bool>,
 }
+
 impl Default for CompositionObjectText {
     fn default() -> Self {
         CompositionObjectText {
@@ -85,6 +85,15 @@ impl Default for CompositionObjectText {
             text: "".to_string(),
             emoji: None,
             varbatim: None,
+        }
+    }
+}
+
+impl CompositionObjectText {
+    pub fn new(text: &str) -> Self {
+        CompositionObjectText {
+            text: text.to_string(),
+            ..CompositionObjectText::default()
         }
     }
 }

@@ -1,0 +1,58 @@
+use serde_derive::{Deserialize, Serialize};
+use serde_json::Value;
+
+#[derive(Debug, Default,Clone, Deserialize, Serialize)]
+
+pub struct SlackTypesFile {
+    id: Option<String>,
+    created: Option<u32>,
+    timestamp: Option<u32>,
+    name: Option<String>,
+    title: Option<String>,
+    mimetype: Option<String>,
+    filetype: Option<String>,
+    pretty_type: Option<String>,
+    user: Option<String>,
+    editable: Option<bool>,
+    size: Option<u32>,
+    mode: Option<String>,
+    is_external: Option<bool>,
+    external_type: Option<String>,
+    is_public: Option<bool>,
+    public_url_shared: Option<bool>,
+    display_as_bot: Option<bool>,
+    username: Option<String>,
+    url_private: Option<String>,
+    url_private_download: Option<String>,
+    thumb_64: Option<String>,
+    thumb_80: Option<String>,
+    thumb_360: Option<String>,
+    thumb_360_w: Option<u32>,
+    thumb_360_h: Option<u32>,
+    thumb_160: Option<String>,
+    thumb_360_gif: Option<String>,
+    image_exif_rotation: Option<u32>,
+    original_w: Option<u32>,
+    original_h: Option<u32>,
+    deanimate_gif: Option<String>,
+    pjpeg: Option<String>,
+    permalink: Option<String>,
+    permalink_public: Option<String>,
+    comments_count: Option<u32>,
+    is_starred: Option<bool>,
+    sharesing: Option<Value>,
+    groups: Option<Vec<String>>,
+    ims: Option<Vec<String>>,
+    has_rich_preview: Option<bool>,
+}
+
+// pub struct SlackTypesFileShare {
+//     reply_users: Option<Vec<String>>,
+//     reply_users_count: Option<Vec<u32>>,
+//     reply_count: Option<Vec<u32>>,
+//     ts: Option<String>,
+//     thread_ts: Option<String>,
+//     latest_reply: Option<String>,
+//     channel_name: Option<String>,
+//     team_id: Option<String>,
+// }

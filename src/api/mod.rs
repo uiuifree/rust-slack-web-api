@@ -1,7 +1,7 @@
 mod chat;
-mod users;
 mod files;
+mod users;
 
 pub use chat::*;
 pub use files::*;
-pub use users::*;
+// pub use users::*;
