@@ -10,7 +10,7 @@ async fn test() {
 
     let res = client.files_upload(&SlackApiFilesUploadRequest {
         channels: Some(channel.to_string()),
-        file: Some("/home/uiuifree/CLionProjects/rust-slack-web-api/test.txt".to_string()),
+        file: Some("./test.txt".to_string()),
         ..SlackApiFilesUploadRequest::default()
     }).await;
     assert!(res.is_ok());
