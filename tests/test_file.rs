@@ -1,6 +1,5 @@
-use slack_web_api::api::{SlackApiChatDeleteRequest, SlackApiChatGetPermalinkRequest, SlackApiChatMeMessageRequest, SlackApiChatMeMessageResponse, SlackApiChatPostEphemeralRequest, SlackApiChatPostMessageRequest, SlackApiChatScheduledMessagesListRequest, SlackApiChatScheduleMessageRequest, SlackApiChatUnfurlRequest, SlackApiChatUpdateRequest, SlackApiFilesUploadRequest, SlackMessageAttachment};
-use slack_web_api::{CompositionObjectText, SlackAttachmentBuilder, SlackBlockContext, SlackBlockFile, SlackBlockHeader, SlackClient, SlackMessageBuilder};
-use std::process::exit;
+use slack_web_api::api::{SlackApiFilesUploadRequest};
+use slack_web_api::{SlackClient};
 
 #[tokio::test]
 async fn test() {

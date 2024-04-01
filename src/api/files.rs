@@ -1,7 +1,7 @@
+use mpart_async::client::MultipartRequest;
+use mpart_async::filestream::FileStream;
 use crate::{SlackApiResponse, SlackClient, SlackTypesFile};
-use multipart::client::lazy::Multipart;
 use serde_derive::{Deserialize, Serialize};
-use serde_json::Value;
 
 
 impl SlackClient {
@@ -295,32 +295,32 @@ pub struct SlackApiFilesUploadRequest {
 }
 
 impl SlackApiFilesUploadRequest {
-    fn to_multipart(&self) -> Multipart<'static, 'static> {
-        let mut multipart = Multipart::new();
+    fn to_multipart(&self) -> MultipartRequest<FileStream> {
+        let mut multipart = MultipartRequest::default();
         let value = self.clone();
         if value.channels.is_some() {
-            multipart.add_text("channels", value.channels.unwrap_or_default());
+            multipart.add_field("channels", value.channels.unwrap_or_default().as_str());
         }
         if value.content.is_some() {
-            multipart.add_text("content", value.content.unwrap_or_default());
+            multipart.add_field("content", value.content.unwrap_or_default().as_str());
         }
         if value.file.is_some() {
             multipart.add_file("file", value.file.unwrap_or_default());
         }
         if value.filename.is_some() {
-            multipart.add_text("filename", value.filename.unwrap_or_default());
+            multipart.add_field("filename", value.filename.unwrap_or_default().as_str());
         }
         if value.filetype.is_some() {
-            multipart.add_text("filetype", value.filetype.unwrap_or_default());
+            multipart.add_field("filetype", value.filetype.unwrap_or_default().as_str());
         }
         if value.initial_comment.is_some() {
-            multipart.add_text("initial_comment", value.initial_comment.unwrap_or_default());
+            multipart.add_field("initial_comment", value.initial_comment.unwrap_or_default().as_str());
         }
         if value.thread_ts.is_some() {
-            multipart.add_text("thread_ts", value.thread_ts.unwrap_or_default());
+            multipart.add_field("thread_ts", value.thread_ts.unwrap_or_default().as_str());
         }
         if value.title.is_some() {
-            multipart.add_text("title", value.title.unwrap_or_default());
+            multipart.add_field("title", value.title.unwrap_or_default().as_str());
         }
         multipart
     }

@@ -11,7 +11,8 @@ pub use entity::*;
 use hyper::http::request::Builder;
 use hyper::{Body, Method};
 use hyper_tls::HttpsConnector;
-use multipart::client::lazy::Multipart;
+use mpart_async::client::MultipartRequest;
+use mpart_async::filestream::FileStream;
 
 use serde_json::{json, Value};
 
@@ -125,22 +126,18 @@ impl SlackClient {
     pub(crate) async fn http_post_data<R>(
         &self,
         url: &str,
-        multipart: Multipart<'_, '_>,
+        multipart: MultipartRequest<FileStream>,
     ) -> SlackApiResponse<R>
     where
         R: for<'de> serde::Deserialize<'de>,
     {
         let mut build = builder_file(url, self.context.token.clone().unwrap_or_default().as_str())
             .method(Method::POST);
-        let mut s = "".to_string();
-        let mut multipart = multipart;
-        let mut aa = multipart.prepare().unwrap();
         build = build.header(
             "Content-Type",
-            format!("multipart/form-data; boundary={}", aa.boundary()),
+            format!("multipart/form-data; boundary={}", multipart.get_boundary()),
         );
-        aa.read_to_string(&mut s).unwrap();
-        let request = build.body(Body::from(s)).unwrap();
+        let request = build.body(Body::wrap_stream(multipart)).unwrap();
         let response = hyper::Client::builder()
             .build(HttpsConnector::new())
             .request(request)
