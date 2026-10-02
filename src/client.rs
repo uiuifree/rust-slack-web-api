@@ -8,7 +8,11 @@ use std::sync::Arc;
 use std::time::Duration;
 
 const DEFAULT_BASE_URL: &str = "https://slack.com/api/";
-const DEFAULT_MAX_RETRIES: u32 = 3;
+// 既定では 429 を再送しない。待ってよい時間は呼び出し側にしか決められない
+const DEFAULT_MAX_RETRIES: u32 = 0;
+// 自前で作る HTTP クライアントの時間切れ。reqwest の既定は時間切れ無しで、Slack が応答しないと待ち続ける
+const DEFAULT_TIMEOUT: Duration = Duration::from_secs(30);
+const DEFAULT_CONNECT_TIMEOUT: Duration = Duration::from_secs(10);
 // 429 に Retry-After が無いときの待ち時間
 const DEFAULT_RETRY_AFTER: Duration = Duration::from_secs(1);
 const FORM_CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
@@ -74,7 +78,12 @@ impl std::fmt::Debug for SlackClient {
 }
 
 impl SlackClient {
-    /// Creates a client that authenticates with `token` (`xoxb-`, `xoxp-`, ...).
+    /// Creates a client that authenticates with `token` (`xoxb-`, `xoxp-`, ...), with a 30 second
+    /// request timeout and no retry on HTTP 429.
+    ///
+    /// # Panics
+    ///
+    /// When the TLS backend cannot be initialized, like `reqwest::Client::new()`.
     pub fn new(token: impl Into<String>) -> Self {
         Self::builder().token(token).build()
     }
@@ -217,7 +226,9 @@ impl SlackClientBuilder {
     }
 
     /// Uses an existing `reqwest::Client` so the application and Slack share one connection pool.
-    /// Defaults to `reqwest::Client::default()`.
+    /// Its own settings (timeouts, proxy, ...) are used as they are.
+    ///
+    /// Without it, the client is built with a 30 second request timeout and a 10 second connect timeout.
     pub fn http_client(mut self, http: reqwest::Client) -> Self {
         self.http = Some(http);
         self
@@ -234,18 +245,33 @@ impl SlackClientBuilder {
         self
     }
 
-    /// How many times a request is resent after a 429, waiting for `Retry-After` each time
-    /// (default 3, `0` disables retries).
+    /// How many times a request is resent after a 429, waiting for `Retry-After` each time.
+    ///
+    /// The default is `0`: a 429 is returned at once as [`SlackError::RateLimited`] with the
+    /// `Retry-After` value, because only the caller knows how long a request may wait.
     /// Other failures (5xx, network errors) are never retried, to avoid posting twice.
     pub fn max_retries(mut self, max_retries: u32) -> Self {
         self.max_retries = Some(max_retries);
         self
     }
 
+    /// Builds the client.
+    ///
+    /// # Panics
+    ///
+    /// When no `http_client` was given and the TLS backend cannot be initialized, like
+    /// `reqwest::Client::new()`.
     pub fn build(self) -> SlackClient {
+        let http = self.http.unwrap_or_else(|| {
+            reqwest::Client::builder()
+                .timeout(DEFAULT_TIMEOUT)
+                .connect_timeout(DEFAULT_CONNECT_TIMEOUT)
+                .build()
+                .expect("failed to initialize the TLS backend for reqwest")
+        });
         SlackClient {
             inner: Arc::new(Inner {
-                http: self.http.unwrap_or_default(),
+                http,
                 token: self.token,
                 base_url: self.base_url.unwrap_or_else(|| DEFAULT_BASE_URL.to_owned()),
                 max_retries: self.max_retries.unwrap_or(DEFAULT_MAX_RETRIES),

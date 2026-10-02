@@ -1,7 +1,8 @@
 [package]
 name = "slack-web-api"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
+rust-version = "1.88"
 authors = ["uiuifree"]
 description = "Typed async Slack Web API client for Rust: all 330 methods incl. admin, Block Kit, pagination, file upload, rate-limit retry (reqwest + rustls, no OpenSSL)"
 license = "MIT"

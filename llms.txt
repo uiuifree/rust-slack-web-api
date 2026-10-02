@@ -21,7 +21,8 @@
 
 ## Behavior
 - Requests are sent as application/x-www-form-urlencoded (accepted by every method); lists of strings are comma-separated, objects JSON-encoded
-- HTTP 429 is retried after `Retry-After` (default 3 times); other failures are not retried
+- The built-in HTTP client has a 30 s request timeout and 10 s connect timeout; a client given with `http_client` keeps its own settings
+- HTTP 429 is not retried by default: it returns `SlackError::RateLimited { retry_after }` at once. `max_retries(n)` makes the client wait for `Retry-After` and resend; other failures are never retried
 - Response fields are all optional and scalars are read leniently (string/number mismatches do not fail the response)
 - Methods whose documented response has no fields keep everything Slack returns in a flattened `extra` map
 - Lists of blocks, attachments and objects are always sent as JSON arrays, even when empty (`[]` clears blocks in `chat.update`)

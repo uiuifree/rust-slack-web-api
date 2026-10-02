@@ -4,6 +4,16 @@ use std::time::Duration;
 use wiremock::matchers::{body_string, header, method, path};
 use wiremock::{Mock, MockServer, ResponseTemplate};
 
+async fn retrying_server(max_retries: u32) -> (MockServer, SlackClient) {
+    let server = MockServer::start().await;
+    let client = SlackClient::builder()
+        .token("xoxb-1")
+        .base_url(format!("{}/api", server.uri()))
+        .max_retries(max_retries)
+        .build();
+    (server, client)
+}
+
 async fn server() -> (MockServer, SlackClient) {
     let server = MockServer::start().await;
     let client = SlackClient::builder()
@@ -81,7 +91,7 @@ async fn api_error_without_error_field() {
 
 #[tokio::test]
 async fn retries_after_rate_limit() {
-    let (server, client) = server().await;
+    let (server, client) = retrying_server(3).await;
     Mock::given(path("/api/api.test"))
         .respond_with(ResponseTemplate::new(429).insert_header("retry-after", "0"))
         .up_to_n_times(2)
@@ -97,7 +107,7 @@ async fn retries_after_rate_limit() {
 
 #[tokio::test]
 async fn rate_limit_without_retry_after_waits_one_second() {
-    let (server, client) = server().await;
+    let (server, client) = retrying_server(1).await;
     Mock::given(path("/api/api.test"))
         .respond_with(ResponseTemplate::new(429))
         .up_to_n_times(1)
@@ -333,4 +343,42 @@ async fn metadata_without_payload_and_unknown_fields_are_kept() {
         .await
         .unwrap();
     assert_eq!(added.extra["undocumented"], 1);
+}
+
+#[tokio::test]
+async fn rate_limit_is_returned_at_once_by_default() {
+    let (server, client) = server().await;
+    Mock::given(path("/api/api.test"))
+        .respond_with(ResponseTemplate::new(429).insert_header("retry-after", "30"))
+        .expect(1)
+        .mount(&server)
+        .await;
+    let started = std::time::Instant::now();
+    let err = client.call_raw("api.test", &()).await.unwrap_err();
+    assert!(started.elapsed() < Duration::from_secs(5));
+    assert!(
+        matches!(err, SlackError::RateLimited { retry_after: Some(d) } if d == Duration::from_secs(30))
+    );
+}
+
+#[tokio::test]
+async fn a_given_http_client_keeps_its_own_timeout() {
+    let server = MockServer::start().await;
+    Mock::given(path("/api/api.test"))
+        .respond_with(json(r#"{"ok":true}"#).set_delay(Duration::from_secs(2)))
+        .mount(&server)
+        .await;
+    let http = reqwest::Client::builder()
+        .timeout(Duration::from_millis(100))
+        .build()
+        .unwrap();
+    let client = SlackClient::builder()
+        .http_client(http)
+        .base_url(format!("{}/api", server.uri()))
+        .build();
+    let err = client.call_raw("api.test", &()).await.unwrap_err();
+    assert!(
+        matches!(err, SlackError::Transport(ref e) if e.is_timeout()),
+        "{err:?}"
+    );
 }

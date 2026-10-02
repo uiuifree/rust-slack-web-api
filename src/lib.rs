@@ -6,7 +6,8 @@
 //! - One function per Web API method: `chat.postMessage` is [`SlackClient::chat_post_message`],
 //!   `conversations.history` is [`SlackClient::conversations_history`], and so on. The full list is in [`api`].
 //! - Request and response types for every method, core objects in [`objects`], and typed Block Kit in [`blocks`].
-//! - One shared connection pool (HTTP/2), automatic retry on HTTP 429, cursor pagination and file upload.
+//! - One shared connection pool (HTTP/2), a 30 second default timeout, optional retry on HTTP 429,
+//!   cursor pagination and file upload.
 //!
 //! This crate only calls the Web API. It does not receive events (Socket Mode, Events API, interactivity).
 //!
@@ -118,8 +119,11 @@
 //!
 //! - Requests are sent as `application/x-www-form-urlencoded`, which every method accepts. Lists of strings are
 //!   sent comma-separated and objects (blocks, attachments) as JSON.
-//! - HTTP 429 is retried after `Retry-After` (3 times by default). Other failures are not retried, so a
-//!   message is never posted twice.
+//! - The built-in HTTP client has a 30 second request timeout and a 10 second connect timeout. A client
+//!   passed with [`SlackClientBuilder::http_client`] keeps its own settings.
+//! - HTTP 429 is returned at once as [`SlackError::RateLimited`] with its `Retry-After`, because only the caller
+//!   knows how long a request may wait. With [`SlackClientBuilder::max_retries`] the client waits for `Retry-After`
+//!   and resends. Other failures are never retried, so a message is never posted twice.
 //! - Response fields are all optional. Scalars are read leniently, because Slack sometimes returns the same field
 //!   as a string in one place and a number in another; unknown fields are skipped.
 
