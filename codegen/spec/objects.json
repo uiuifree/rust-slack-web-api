@@ -1,0 +1,353 @@
+{
+ "Conversation": [
+  {
+   "id": "C1H9RESGL",
+   "name": "busting",
+   "is_channel": true,
+   "created": 1466025154,
+   "creator": "U0G9QF9C6",
+   "is_archived": false,
+   "is_general": false,
+   "name_normalized": "busting",
+   "is_shared": false,
+   "is_org_shared": false,
+   "is_member": true,
+   "is_private": false,
+   "is_mpim": false,
+   "last_read": "1503435939.000101",
+   "latest": {
+    "text": "Containment unit is 98% full",
+    "username": "ecto1138",
+    "bot_id": "B19LU7CSY",
+    "attachments": [
+     {
+      "text": "Don't get too attached",
+      "id": 1,
+      "fallback": "This is an attachment fallback"
+     }
+    ],
+    "type": "message",
+    "subtype": "bot_message",
+    "ts": "1503435956.000247"
+   },
+   "unread_count": 1,
+   "unread_count_display": 1,
+   "members": [
+    "U0G9QF9C6",
+    "U1QNSQB9U"
+   ],
+   "topic": {
+    "value": "Spiritual containment strategies",
+    "creator": "U0G9QF9C6",
+    "last_set": 1503435128
+   },
+   "purpose": {
+    "value": "Discuss busting ghosts",
+    "creator": "U0G9QF9C6",
+    "last_set": 1503435128
+   },
+   "previous_names": [
+    "dusting"
+   ]
+  },
+  {
+   "id": "C123456",
+   "name": "general",
+   "is_channel": true,
+   "is_group": false,
+   "is_im": false,
+   "is_mpim": false,
+   "is_private": false,
+   "created": 1449252889,
+   "is_archived": false,
+   "is_general": true,
+   "unlinked": 0,
+   "name_normalized": "general",
+   "is_shared": false,
+   "is_frozen": false,
+   "is_org_shared": false,
+   "is_pending_ext_shared": false,
+   "pending_shared": [],
+   "context_team_id": "T12345ABCDE",
+   "updated": 1689965803820,
+   "parent_conversation": null,
+   "creator": "W123456",
+   "is_ext_shared": false,
+   "shared_team_ids": [
+    "T12345ABCDE"
+   ],
+   "pending_connected_team_ids": [],
+   "is_member": true,
+   "topic": {
+    "value": "For public discussion of generalities",
+    "creator": "W123456",
+    "last_set": 1449709364
+   },
+   "purpose": {
+    "value": "This part of the workspace is for fun. Make fun here.",
+    "creator": "W123456",
+    "last_set": 1449709364
+   },
+   "properties": {
+    "posting_restricted_to": {
+     "type": [
+      "admin"
+     ]
+    },
+    "threads_restricted_to": {
+     "type": [
+      "ra"
+     ]
+    },
+    "tabs": [
+     {
+      "id": "files",
+      "label": "",
+      "type": "files"
+     },
+     {
+      "id": "bookmarks",
+      "label": "",
+      "type": "bookmarks"
+     }
+    ]
+   },
+   "previous_names": [
+    "specifics",
+    "abstractions",
+    "etc"
+   ]
+  },
+  {
+   "id": "G123456",
+   "name": "secretplans",
+   "is_group": "true",
+   "created": 1360782804,
+   "creator": "U123456",
+   "is_archived": false,
+   "is_mpim": false,
+   "members": [
+    "U012AB3CD"
+   ],
+   "topic": {
+    "value": "Secret plans on hold",
+    "creator": "U123456",
+    "last_set": 1369677212
+   },
+   "purpose": {
+    "value": "Discuss secret plans that nobody else should know",
+    "creator": "U123456",
+    "last_set": 1360782804
+   },
+   "last_read": "1401383885.000061",
+   "latest": {},
+   "unread_count": 0,
+   "unread_count_display": 0
+  },
+  {
+   "id": "D024BFF1M",
+   "is_im": true,
+   "user": "U024BE7LH",
+   "created": 1360782804,
+   "is_user_deleted": false
+  },
+  {
+   "id": "G024BE91L",
+   "name": "mpdm-user1--user2--user3-1",
+   "is_mpim": true,
+   "is_group": false,
+   "created": 1360782804,
+   "creator": "U024BE7LH",
+   "members": [
+    "U024BE7LH"
+   ],
+   "last_read": "1401383885.000061",
+   "latest": {},
+   "unread_count": 0,
+   "unread_count_display": 0
+  }
+ ],
+ "File": [
+  {
+   "id": "F0A12BCDE",
+   "created": 1531763342,
+   "timestamp": 1531763342,
+   "name": "tedair.gif",
+   "title": "tedair.gif",
+   "mimetype": "image/gif",
+   "filetype": "gif",
+   "pretty_type": "GIF",
+   "user": "U012A3BCD",
+   "editable": false,
+   "size": 137531,
+   "mode": "hosted",
+   "is_external": false,
+   "external_type": "",
+   "is_public": true,
+   "public_url_shared": false,
+   "display_as_bot": false,
+   "username": "",
+   "url_private": "https://.../tedair.gif",
+   "url_private_download": "https://.../tedair.gif",
+   "thumb_64": "https://.../tedair_64.png",
+   "thumb_80": "https://.../tedair_80.png",
+   "thumb_360": "https://.../tedair_360.png",
+   "thumb_360_w": 176,
+   "thumb_360_h": 226,
+   "thumb_160": "https://.../tedair_=_160.png",
+   "thumb_360_gif": "https://.../tedair_360.gif",
+   "image_exif_rotation": 1,
+   "original_w": 176,
+   "original_h": 226,
+   "deanimate_gif": "https://.../tedair_deanimate_gif.png",
+   "pjpeg": "https://.../tedair_pjpeg.jpg",
+   "permalink": "https://.../tedair.gif",
+   "permalink_public": "https://.../...",
+   "comments_count": 0,
+   "is_starred": false,
+   "shares": {
+    "public": {
+     "C0A1BC2DE": [
+      {
+       "reply_users": [
+        "U012A3BCD"
+       ],
+       "reply_users_count": 1,
+       "reply_count": 1,
+       "ts": "1531763348.000001",
+       "thread_ts": "1531763273.000015",
+       "latest_reply": "1531763348.000001",
+       "channel_name": "file-under",
+       "team_id": "T012AB3C4"
+      }
+     ]
+    }
+   },
+   "channels": [
+    "C0A1BC2DE"
+   ],
+   "groups": [],
+   "ims": [],
+   "has_rich_preview": false
+  },
+  {
+   "id": "F12345678",
+   "mode": "file_access",
+   "file_access": "check_file_info",
+   "created": 0,
+   "timestamp": 0,
+   "user": ""
+  }
+ ],
+ "User": [
+  {
+   "id": "U123ABC456",
+   "team_id": "T123ABC456",
+   "name": "sherlock",
+   "deleted": false,
+   "color": "99a949",
+   "real_name": "Sherlock Holmes",
+   "tz": "Europe/London",
+   "tz_label": "Greenwich Mean Time",
+   "tz_offset": 0,
+   "profile": {
+    "title": "Senior Detective",
+    "phone": "(000) 000-0000",
+    "skype": "",
+    "real_name": "Sherlock Holmes",
+    "real_name_normalized": "Sherlock Holmes",
+    "display_name": "sherlock",
+    "display_name_normalized": "sherlock",
+    "fields": {
+     "Xf111AAA111": {
+      "value": "1 dog: Sherlock Bones",
+      "alt": ""
+     },
+     "Xf222BBB222": {
+      "value": "no tree nuts!",
+      "alt": ""
+     }
+    },
+    "status_text": "elementary, my dear watson ",
+    "status_emoji": ":thinking-face:",
+    "status_emoji_display_info": [
+     {
+      "emoji_name": "thinking-face",
+      "display_url": "https://emoji.slack-edge.com/T123ABC456/thinking-face/123...abc.png"
+     }
+    ],
+    "status_expiration": 0,
+    "avatar_hash": "b187f5128ba4",
+    "start_date": "2015-12-25",
+    "image_original": "https://avatars.slack-edge.com/2021-10-21/..._...__original.jpg",
+    "is_custom_image": true,
+    "email": "sholmes@example.com",
+    "pronouns": "they/them",
+    "huddle_state": "default_unset",
+    "huddle_state_expiration_ts": 0,
+    "first_name": "Sherlock",
+    "last_name": "Holmes",
+    "image_24": "https://avatars.slack-edge.com/2021-10-21/..._...__24.jpg",
+    "image_32": "https://avatars.slack-edge.com/2021-10-21/..._...__32.jpg",
+    "image_48": "https://avatars.slack-edge.com/2021-10-21/..._...__48.jpg",
+    "image_72": "https://avatars.slack-edge.com/2021-10-21/..._...__72.jpg",
+    "image_192": "https://avatars.slack-edge.com/2021-10-21/..._...__192.jpg",
+    "image_512": "https://avatars.slack-edge.com/2021-10-21/..._...__512.jpg",
+    "image_1024": "https://avatars.slack-edge.com/2021-10-21/..._...__1024.jpg",
+    "status_text_canonical": "",
+    "team": "T0123ABC456"
+   },
+   "is_admin": false,
+   "is_owner": false,
+   "is_primary_owner": false,
+   "is_restricted": false,
+   "is_ultra_restricted": false,
+   "is_bot": false,
+   "is_app_user": false,
+   "updated": 1675264590,
+   "is_email_confirmed": true,
+   "who_can_share_contact_card": "EVERYONE",
+   "enterprise_user": {
+    "id": "U123ABC456",
+    "enterprise_id": "E123ABC456",
+    "enterprise_name": "Sherlock Holmes Detective Agency",
+    "is_admin": false,
+    "is_owner": false,
+    "is_primary_owner": false,
+    "teams": [
+     "T123ABC456",
+     "T789DEF000"
+    ]
+   }
+  }
+ ],
+ "Usergroup": [
+  {
+   "id": "S123ABC456",
+   "team_id": "T060RNRCH",
+   "is_usergroup": true,
+   "name": "Workspace Admins",
+   "description": "A group of all Administrators on your workspace.",
+   "handle": "admins",
+   "is_external": false,
+   "date_create": 1446598059,
+   "date_update": 1446670362,
+   "date_delete": 0,
+   "auto_type": "admin",
+   "created_by": "USLACKBOT",
+   "updated_by": "U060RNRCZ",
+   "deleted_by": null,
+   "prefs": {
+    "channels": [],
+    "groups": []
+   },
+   "users": [
+    "U060RNRCZ",
+    "U060ULRC0",
+    "U06129G2V",
+    "U061309JM"
+   ],
+   "user_count": "4"
+  }
+ ]
+}
