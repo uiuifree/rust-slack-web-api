@@ -10,6 +10,22 @@ Slack Web API の Rust クライアント（crate: slack-web-api）。
 - 生成物（手で編集しない）: `src/api/*.rs`・`src/objects.rs`・`tests/generated_methods.rs`。
   生成器は `codegen/generate.py`、入力は `codegen/spec/*.json`（`codegen/parse_docs.py` が docs.slack.dev から作る）
 
+## コマンド
+
+```sh
+cargo test
+cargo clippy --all-targets -- -D warnings
+cargo fmt --all -- --check
+RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
+cargo +1.88 check --all-targets   # MSRV（Cargo.toml の rust-version と CI に合わせる）
+SLACK_BOT_TOKEN=... cargo run --example post_message -- <channel id> "text"   # 実 API の確認
+SLACK_BOT_TOKEN=... SLACK_TEST_CHANNEL=... cargo test --test live -- --ignored --nocapture --test-threads=1   # 実 API のライブテスト
+python3 codegen/generate.py && cargo fmt   # 型の再生成（codegen/spec から）
+```
+
+- 既定のテストはネットワーク不要（wiremock のモックサーバー）。実 API を叩くのは `examples/` と `tests/live.rs`（`#[ignore]`）だけで、CI では走らせない
+- 変更したら `CHANGELOG.md` の `[Unreleased]` に書く
+
 ## 役割
 
 - **レビュー**（`codex exec review`）: 読み取り専用。指摘だけを返し、ファイルは変更しない。

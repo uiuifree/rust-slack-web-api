@@ -2,11 +2,17 @@
 
 [English](README.md) | 日本語
 
+[![crates.io](https://img.shields.io/crates/v/slack-web-api.svg)](https://crates.io/crates/slack-web-api)
+[![docs.rs](https://img.shields.io/docsrs/slack-web-api)](https://docs.rs/slack-web-api)
+[![CI](https://github.com/uiuifree/rust-slack-web-api/actions/workflows/ci.yml/badge.svg)](https://github.com/uiuifree/rust-slack-web-api/actions/workflows/ci.yml)
+[![MSRV 1.88](https://img.shields.io/badge/MSRV-1.88-blue.svg)](https://blog.rust-lang.org/)
+[![license: MIT](https://img.shields.io/crates/l/slack-web-api.svg)](LICENSE)
+
 Slack Web API の全メソッド（330、`admin.*` を含む）を型付きで呼べる、非同期の Rust クライアント。
 
 - 通信は reqwest + rustls（OpenSSL 不要）。HTTP/2 と接続プールを使い回す
 - 全メソッドの引数・応答の型と、Block Kit の型を持つ
-- 429 は `Retry-After` を見て自動で再送（既定 3 回）
+- 既定で 30 秒の時間切れ。429 は `Retry-After` の値つきでエラーとして返し、`max_retries` を指定すれば待って再送する
 - cursor のページ送り、ファイルのアップロード（`files.upload` の後継手順）をまとめて提供
 
 Web API（こちらから呼ぶ側）専用。Socket Mode や Events API の受信には使えない。
@@ -54,6 +60,8 @@ let client = slack_web_api::SlackClient::builder()
     .build();
 ```
 
+渡したクライアントはその設定のまま使うので、時間切れを付けておく（自前で作るときは全体 30 秒・接続 10 秒だが、
+`reqwest::Client::new()` には時間切れが無い）。
 複数ワークスペースを扱うときは `client.with_token("xoxb-other")` で、接続プールを共有したままトークンだけ替える。
 
 ### ページ送り
@@ -152,6 +160,35 @@ Block Kit: 全ブロック・ブロック要素・rich text 要素・構成オ�
 応答の型はドキュメントの応答例を全メソッド分重ねて作っている。項目は全部省略可能（`Option` か空の `Vec`）で、
 Slack が同じ項目を文字列で返したり数値で返したりしても失敗しないよう、ゆるく読む（`ts` が数値で来ても文字列にする等）。
 型に無い項目は読み飛ばす。全部見たいときは `call_raw` を使う。
+
+## 開発
+
+```sh
+cargo test                                     # 単体・モックサーバー・生成テスト。ネットワーク不要
+cargo clippy --all-targets -- -D warnings
+cargo fmt --all -- --check
+RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
+SLACK_BOT_TOKEN=xoxb-... cargo run --example post_message -- C0123456789 "Hello from Rust"
+```
+
+`cargo test` は Slack に繋がない。全メソッドを、ドキュメントの応答例を返すモックサーバーに対して呼び、
+読んだときに値が欠けないことを確かめる。
+
+### ライブテスト
+
+`tests/live.rs` は実際の Slack に繋ぐ。全て `#[ignore]` なので `cargo test` と CI では走らない。
+ボットトークン（`chat:write`・`channels:read`・`channels:history`・`files:write`・`users:read`）と、
+ボットが参加しているチャンネルを渡して実行する。メッセージ1件の投稿・更新・削除と、ファイル2つのアップロード・削除を行う。
+
+```sh
+SLACK_BOT_TOKEN=xoxb-... SLACK_TEST_CHANNEL=C0123456789 \
+  cargo test --test live -- --ignored --nocapture --test-threads=1
+```
+
+モックでは確かめられないこと（Slack がこのクレートの送る形式を受け付けるか、アップロードが最後まで通るか、
+実際のエラーを分類できるか）を見る。型が拾えていない応答の項目があれば一覧で出す。
+
+変更は [CHANGELOG.md](CHANGELOG.md) に記録している。
 
 ## 型の再生成
 

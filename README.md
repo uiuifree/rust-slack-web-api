@@ -2,11 +2,17 @@
 
 English | [日本語](README.ja.md)
 
+[![crates.io](https://img.shields.io/crates/v/slack-web-api.svg)](https://crates.io/crates/slack-web-api)
+[![docs.rs](https://img.shields.io/docsrs/slack-web-api)](https://docs.rs/slack-web-api)
+[![CI](https://github.com/uiuifree/rust-slack-web-api/actions/workflows/ci.yml/badge.svg)](https://github.com/uiuifree/rust-slack-web-api/actions/workflows/ci.yml)
+[![MSRV 1.88](https://img.shields.io/badge/MSRV-1.88-blue.svg)](https://blog.rust-lang.org/)
+[![license: MIT](https://img.shields.io/crates/l/slack-web-api.svg)](LICENSE)
+
 Typed async Rust client for **every Slack Web API method** — all 330 of them, including `admin.*` — built on reqwest and rustls.
 
 - No OpenSSL: reqwest 0.13 + rustls, HTTP/2 and a shared connection pool
 - Request and response types for every method, plus typed Block Kit
-- Automatic retry on 429 using `Retry-After` (3 times by default)
+- 30 second request timeout by default; HTTP 429 is returned with its `Retry-After`, and can be retried for you (`max_retries`)
 - Cursor pagination and file upload (the replacement for the retired `files.upload`) built in
 
 It covers the Web API only. For Socket Mode or receiving Events API payloads, use another crate.
@@ -54,6 +60,8 @@ let client = slack_web_api::SlackClient::builder()
     .build();
 ```
 
+A client you pass keeps its own settings, so give it a timeout: the built-in client uses 30 seconds
+(10 seconds to connect), but `reqwest::Client::new()` has none.
 For apps installed in many workspaces, `client.with_token("xoxb-other")` switches the token while keeping the pool.
 
 ### Pagination
@@ -154,6 +162,35 @@ Response types are inferred from the documented response examples of all methods
 and scalar fields are read leniently: Slack sometimes returns the same field as a string in one place and a number in
 another, and that must not fail the whole response. Unknown fields are skipped; use `call_raw` to see everything.
 A test calls every method against a mock server returning its documented examples and checks no value is lost.
+
+## Development
+
+```sh
+cargo test                                     # unit, mock-server and generated tests; no network needed
+cargo clippy --all-targets -- -D warnings
+cargo fmt --all -- --check
+RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
+SLACK_BOT_TOKEN=xoxb-... cargo run --example post_message -- C0123456789 "Hello from Rust"
+```
+
+`cargo test` never calls Slack: every method is exercised against a mock server that returns the documented
+response examples, and the test checks that no value is lost when reading them.
+
+### Live tests
+
+`tests/live.rs` talks to the real Slack API. The tests are `#[ignore]`d, so `cargo test` and CI skip them.
+Run them with a bot token (`chat:write`, `channels:read`, `channels:history`, `files:write`, `users:read`) and a
+channel the bot has joined; they post, update and delete one message and upload and delete two files:
+
+```sh
+SLACK_BOT_TOKEN=xoxb-... SLACK_TEST_CHANNEL=C0123456789 \
+  cargo test --test live -- --ignored --nocapture --test-threads=1
+```
+
+They check what a mock cannot: that Slack accepts the form bodies this crate builds, that the upload flow works
+end to end, that real errors are classified — and they print response fields the typed model does not cover yet.
+
+Changes are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 ## Regenerating the types
 
