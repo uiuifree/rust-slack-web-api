@@ -1,0 +1,40 @@
+# slack-web-api
+
+> Typed async Rust client for every Slack Web API method (330 methods including admin.*), built on reqwest 0.13 + rustls. Crate name: `slack-web-api`, import as `slack_web_api`.
+
+## When to use
+- Calling Slack Web API methods from async Rust (tokio): posting messages, reading conversations, managing users, files, views, admin.* APIs
+- You want typed requests/responses and typed Block Kit, without OpenSSL
+- You need the replacement for the retired `files.upload` (use `SlackClient::upload_files`)
+
+## When not to use
+- Receiving events (Socket Mode, Events API, interactivity payloads, slash commands): this crate only calls the Web API
+- Blocking (non-async) code
+- Incoming webhooks only: a plain HTTP POST is enough
+
+## API summary
+- `SlackClient::new(token)` / `SlackClient::builder().token(..).http_client(reqwest_client).base_url(..).max_retries(n).build()`
+- One method per Web API method: `chat.postMessage` -> `client.chat_post_message(&ChatPostMessageRequest::new(channel).text(..))`
+- Types: `slack_web_api::api::{XxxRequest, XxxResponse}`, core objects in `slack_web_api::objects`, Block Kit in `slack_web_api::blocks`
+- `client.call(&request)` (generic), `client.call_raw(method, &params)` (untyped JSON), `client.pages(request)` (cursor pagination), `client.upload_files(files, destination)`
+- `client.with_token(token)` shares the connection pool across workspaces
+
+## Behavior
+- Requests are sent as application/x-www-form-urlencoded (accepted by every method); lists of strings are comma-separated, objects JSON-encoded
+- HTTP 429 is retried after `Retry-After` (default 3 times); other failures are not retried
+- Response fields are all optional and scalars are read leniently (string/number mismatches do not fail the response)
+- Methods whose documented response has no fields keep everything Slack returns in a flattened `extra` map
+- Lists of blocks, attachments and objects are always sent as JSON arrays, even when empty (`[]` clears blocks in `chat.update`)
+- Errors: `SlackError::{Api, RateLimited, Http, Transport, Decode, Encode, MissingField, Task}`; `err.api_error()` gives Slack's error code
+
+## Finding the function for a Slack method
+- Rule: the Slack method name in snake_case, dots replaced by underscores: `conversations.history` -> `conversations_history`, `admin.users.session.reset` -> `admin_users_session_reset`, `files.getUploadURLExternal` -> `files_get_upload_url_external`
+- Request/response types: PascalCase of the method name + `Request` / `Response` (`ConversationsHistoryRequest`)
+- Full list of all 330 methods with required arguments: llms-full.txt
+- On docs.rs, searching the Slack method name (`chat.postMessage`) finds the function (doc aliases)
+
+## Links
+- All methods: https://github.com/uiuifree/rust-slack-web-api/blob/main/llms-full.txt
+- Repository: https://github.com/uiuifree/rust-slack-web-api
+- Docs: https://docs.rs/slack-web-api
+- Slack Web API reference: https://docs.slack.dev/reference/methods

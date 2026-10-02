@@ -1,0 +1,261 @@
+{
+ "_comment": "ドキュメントの応答例に出てこないが公式の構造定義（message-structure / user-object / conversation-object 等）に載っている項目。型を決めるための例として generate.py が重ねる。responses はメソッドの応答例の補足（emoji.list はドキュメントの例が {\"ok\": true} だけ）",
+ "Message": [
+  {
+   "type": "message",
+   "subtype": "bot_message",
+   "ts": "1503435956.000247",
+   "thread_ts": "1503435956.000247",
+   "user": "U123ABC456",
+   "bot_id": "B123ABC456",
+   "app_id": "A123ABC456",
+   "team": "T123ABC456",
+   "channel": "C123ABC456",
+   "text": "hello",
+   "client_msg_id": "4f6c7a26-a2b5-4b4c-9e8e-61b7a3c4b0b8",
+   "username": "bot",
+   "event_ts": "1503435956.000247",
+   "blocks": [],
+   "attachments": [],
+   "files": [],
+   "reactions": [],
+   "upload": false,
+   "display_as_bot": false,
+   "edited": {
+    "user": "U123ABC456",
+    "ts": "1503435957.000000"
+   },
+   "metadata": {
+    "event_type": "task_created",
+    "event_payload": {
+     "id": "1"
+    }
+   },
+   "bot_profile": {
+    "id": "B123ABC456",
+    "deleted": false,
+    "name": "bot",
+    "updated": 1,
+    "app_id": "A123ABC456",
+    "icons": {
+     "image_36": "https://example.com/36.png"
+    },
+    "team_id": "T123ABC456"
+   },
+   "reply_count": 1,
+   "reply_users_count": 1,
+   "reply_users": [
+    "U123ABC456"
+   ],
+   "latest_reply": "1503435957.000247",
+   "parent_user_id": "U123ABC456",
+   "is_locked": false,
+   "subscribed": true,
+   "last_read": "1503435957.000247",
+   "hidden": false,
+   "deleted_ts": "1503435956.000247",
+   "is_starred": false,
+   "pinned_to": [
+    "C123ABC456"
+   ],
+   "permalink": "https://example.slack.com/archives/C1/p1",
+   "inviter": "U123ABC456",
+   "purpose": "purpose",
+   "name": "general",
+   "old_name": "random"
+  }
+ ],
+ "Conversation": [
+  {
+   "id": "C123ABC456",
+   "name": "general",
+   "is_channel": true,
+   "is_group": false,
+   "is_im": false,
+   "is_mpim": false,
+   "is_private": false,
+   "created": 1449252889,
+   "creator": "U123ABC456",
+   "is_archived": false,
+   "is_general": true,
+   "unlinked": 0,
+   "name_normalized": "general",
+   "is_shared": false,
+   "is_ext_shared": false,
+   "is_org_shared": false,
+   "is_pending_ext_shared": false,
+   "is_member": true,
+   "is_open": true,
+   "is_read_only": false,
+   "is_thread_only": false,
+   "is_starred": false,
+   "is_moved": 0,
+   "is_user_deleted": false,
+   "user": "U123ABC456",
+   "priority": 0,
+   "num_members": 1,
+   "locale": "en-US",
+   "last_read": "1502126650.228446",
+   "unread_count": 0,
+   "unread_count_display": 0,
+   "context_team_id": "T123ABC456",
+   "enterprise_id": "E123ABC456",
+   "conversation_host_id": "T123ABC456",
+   "internal_team_ids": [
+    "T123ABC456"
+   ],
+   "shared_team_ids": [
+    "T123ABC456"
+   ],
+   "pending_shared": [
+    "T123ABC456"
+   ],
+   "pending_connected_team_ids": [
+    "T123ABC456"
+   ],
+   "connected_team_ids": [
+    "T123ABC456"
+   ],
+   "previous_names": [
+    "old"
+   ],
+   "members": [
+    "U123ABC456"
+   ],
+   "topic": {
+    "value": "t",
+    "creator": "U123ABC456",
+    "last_set": 1
+   },
+   "purpose": {
+    "value": "p",
+    "creator": "U123ABC456",
+    "last_set": 1
+   }
+  }
+ ],
+ "User": [
+  {
+   "id": "U123ABC456",
+   "team_id": "T123ABC456",
+   "enterprise_id": "E123ABC456",
+   "name": "spengler",
+   "deleted": false,
+   "color": "9f69e7",
+   "real_name": "Egon",
+   "tz": "America/Los_Angeles",
+   "tz_label": "Pacific Daylight Time",
+   "tz_offset": -25200,
+   "locale": "en-US",
+   "is_admin": true,
+   "is_owner": false,
+   "is_primary_owner": false,
+   "is_restricted": false,
+   "is_ultra_restricted": false,
+   "is_bot": false,
+   "is_app_user": false,
+   "is_stranger": false,
+   "is_invited_user": false,
+   "is_workflow_bot": false,
+   "is_email_confirmed": true,
+   "has_2fa": false,
+   "two_factor_type": "sms",
+   "updated": 1502138686,
+   "presence": "active",
+   "always_active": false,
+   "who_can_share_contact_card": "EVERYONE"
+  }
+ ],
+ "UserProfile": [
+  {
+   "title": "",
+   "phone": "",
+   "skype": "",
+   "real_name": "Egon",
+   "real_name_normalized": "Egon",
+   "display_name": "spengler",
+   "display_name_normalized": "spengler",
+   "first_name": "Egon",
+   "last_name": "Spengler",
+   "email": "a@example.com",
+   "status_text": "",
+   "status_emoji": "",
+   "status_expiration": 0,
+   "avatar_hash": "ge3b51ca72de",
+   "team": "T123ABC456",
+   "always_active": false,
+   "bot_id": "B123ABC456",
+   "api_app_id": "A123ABC456",
+   "is_custom_image": false,
+   "pronouns": "",
+   "image_original": "https://example.com/o.png",
+   "image_24": "https://example.com/24.png",
+   "image_32": "https://example.com/32.png",
+   "image_48": "https://example.com/48.png",
+   "image_72": "https://example.com/72.png",
+   "image_192": "https://example.com/192.png",
+   "image_512": "https://example.com/512.png",
+   "image_1024": "https://example.com/1024.png"
+  }
+ ],
+ "File": [
+  {
+   "id": "F123ABC456",
+   "created": 1,
+   "timestamp": 1,
+   "name": "a.txt",
+   "title": "a",
+   "mimetype": "text/plain",
+   "filetype": "text",
+   "pretty_type": "Plain Text",
+   "user": "U123ABC456",
+   "user_team": "T123ABC456",
+   "editable": true,
+   "size": 1,
+   "mode": "snippet",
+   "is_external": false,
+   "external_type": "",
+   "is_public": true,
+   "public_url_shared": false,
+   "display_as_bot": false,
+   "username": "",
+   "url_private": "https://files.slack.com/a",
+   "url_private_download": "https://files.slack.com/a/download",
+   "permalink": "https://example.slack.com/files/a",
+   "permalink_public": "https://slack-files.com/a",
+   "edit_link": "https://example.slack.com/files/a/edit",
+   "preview": "a",
+   "preview_highlight": "a",
+   "lines": 1,
+   "lines_more": 0,
+   "preview_is_truncated": false,
+   "is_starred": false,
+   "comments_count": 0,
+   "has_rich_preview": false,
+   "file_access": "visible",
+   "alt_txt": "",
+   "channels": [
+    "C123ABC456"
+   ],
+   "groups": [
+    "G123ABC456"
+   ],
+   "ims": [
+    "D123ABC456"
+   ]
+  }
+ ],
+ "responses": {
+  "emoji.list": [
+   {
+    "ok": true,
+    "emoji": {
+     "bowtie": "https://emoji.slack-edge.com/T9TK3CUKW/bowtie/f3ec6f2bb0.png",
+     "squirrel": "https://emoji.slack-edge.com/T9TK3CUKW/squirrel/465f40c0e0.png",
+     "shipit": "alias:squirrel"
+    },
+    "cache_ts": "1575283387.000000"
+   }
+  ]
+ }
+}

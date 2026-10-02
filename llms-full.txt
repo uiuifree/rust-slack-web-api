@@ -1,0 +1,480 @@
+# slack-web-api: all Slack Web API methods
+
+> Every Slack Web API method supported by the Rust crate `slack-web-api`, with the Rust function and types.
+> Call pattern: `client.<function>(&<Request>::new(<required args>).<optional_arg>(value)).await?` returns `<Response>`.
+> Required arguments are the parameters of `new`; every other argument is a builder method of the same name.
+
+
+## admin.analytics
+
+- `admin.analytics.getFile` -> `client.admin_analytics_get_file(&AdminAnalyticsGetFileRequest::new(r#type))` -> `bytes::Bytes`: Retrieve analytics data for a given date, presented as a compressed JSON file
+- `admin.analytics.messages.activity` -> `client.admin_analytics_messages_activity(&AdminAnalyticsMessagesActivityRequest::new(channel))` -> `AdminAnalyticsMessagesActivityResponse`: Retrieves activity metrics for messages from a given channel.
+- `admin.analytics.messages.metadata` -> `client.admin_analytics_messages_metadata(&AdminAnalyticsMessagesMetadataRequest::new(channel))` -> `AdminAnalyticsMessagesMetadataResponse`: Retrieves metadata for a list of messages from a given channel.
+
+## admin.apps
+
+- `admin.apps.activities.list` -> `client.admin_apps_activities_list(&AdminAppsActivitiesListRequest::new())` -> `AdminAppsActivitiesListResponse`: Get logs for a specified team/org
+- `admin.apps.approve` -> `client.admin_apps_approve(&AdminAppsApproveRequest::new())` -> `AdminAppsApproveResponse`: Approve an app for installation on a workspace.
+- `admin.apps.approved.list` -> `client.admin_apps_approved_list(&AdminAppsApprovedListRequest::new())` -> `AdminAppsApprovedListResponse`: List approved apps for an org or workspace.
+- `admin.apps.clearResolution` -> `client.admin_apps_clear_resolution(&AdminAppsClearResolutionRequest::new(app_id))` -> `AdminAppsClearResolutionResponse`: Clear an app resolution
+- `admin.apps.config.lookup` -> `client.admin_apps_config_lookup(&AdminAppsConfigLookupRequest::new())` -> `AdminAppsConfigLookupResponse`: Look up the app config for connectors by their IDs
+- `admin.apps.config.set` -> `client.admin_apps_config_set(&AdminAppsConfigSetRequest::new(app_id))` -> `AdminAppsConfigSetResponse`: Set the app config for a connector
+- `admin.apps.mcp.servers.list` -> `client.admin_apps_mcp_servers_list(&AdminAppsMcpServersListRequest::new())` -> `AdminAppsMcpServersListResponse`: List third-party app MCP servers approved for an organization.
+- `admin.apps.mcp.servers.permissions.list` -> `client.admin_apps_mcp_servers_permissions_list(&AdminAppsMcpServersPermissionsListRequest::new(app_id))` -> `AdminAppsMcpServersPermissionsListResponse`: List MCP servers for an app with their access control permissions.
+- `admin.apps.mcp.servers.permissions.set` -> `client.admin_apps_mcp_servers_permissions_set(&AdminAppsMcpServersPermissionsSetRequest::new(app_id, server_id, permission_type))` -> `AdminAppsMcpServersPermissionsSetResponse`: Set the access control permission for who can use an MCP server.
+- `admin.apps.permissions.add` -> `client.admin_apps_permissions_add(&AdminAppsPermissionsAddRequest::new(app_id))` -> `AdminAppsPermissionsAddResponse`: Grant permission for entities to access an app that has its permission type set to named_entities.
+- `admin.apps.permissions.list` -> `client.admin_apps_permissions_list(&AdminAppsPermissionsListRequest::new(app_id))` -> `AdminAppsPermissionsListResponse`: Returns the permission type of an app and the entities that have been granted access.
+- `admin.apps.permissions.remove` -> `client.admin_apps_permissions_remove(&AdminAppsPermissionsRemoveRequest::new(app_id))` -> `AdminAppsPermissionsRemoveResponse`: Revoke an entity's access to an app that has its permission type set to named_entities.
+- `admin.apps.permissions.set` -> `client.admin_apps_permissions_set(&AdminAppsPermissionsSetRequest::new(app_id, permission_type))` -> `AdminAppsPermissionsSetResponse`: Set the permission type for who can access an app.
+- `admin.apps.requests.cancel` -> `client.admin_apps_requests_cancel(&AdminAppsRequestsCancelRequest::new(request_id))` -> `AdminAppsRequestsCancelResponse`: Cancel app request for team
+- `admin.apps.requests.list` -> `client.admin_apps_requests_list(&AdminAppsRequestsListRequest::new())` -> `AdminAppsRequestsListResponse`: List app requests for a team/workspace.
+- `admin.apps.restrict` -> `client.admin_apps_restrict(&AdminAppsRestrictRequest::new())` -> `AdminAppsRestrictResponse`: Restrict an app for installation on a workspace.
+- `admin.apps.restricted.list` -> `client.admin_apps_restricted_list(&AdminAppsRestrictedListRequest::new())` -> `AdminAppsRestrictedListResponse`: List restricted apps for an org or workspace.
+- `admin.apps.uninstall` -> `client.admin_apps_uninstall(&AdminAppsUninstallRequest::new(app_id))` -> `AdminAppsUninstallResponse`: Uninstall an app from one or many workspaces, or an entire enterprise organization.
+
+## admin.audit
+
+- `admin.audit.anomaly.allow.getItem` -> `client.admin_audit_anomaly_allow_get_item(&AdminAuditAnomalyAllowGetItemRequest::new())` -> `AdminAuditAnomalyAllowGetItemResponse`: API to allow Enterprise org admins to read the allow list of IP blocks and ASNs from the enterprise configuration.
+- `admin.audit.anomaly.allow.updateItem` -> `client.admin_audit_anomaly_allow_update_item(&AdminAuditAnomalyAllowUpdateItemRequest::new())` -> `AdminAuditAnomalyAllowUpdateItemResponse`: API to allow Enterprise org admins to write/overwrite the allow list of IP blocks and ASNs from the enterprise configuration.
+
+## admin.auth
+
+- `admin.auth.policy.assignEntities` -> `client.admin_auth_policy_assign_entities(&AdminAuthPolicyAssignEntitiesRequest::new(policy_name, entity_type, entity_ids))` -> `AdminAuthPolicyAssignEntitiesResponse`: Assign entities to a particular authentication policy.
+- `admin.auth.policy.getEntities` -> `client.admin_auth_policy_get_entities(&AdminAuthPolicyGetEntitiesRequest::new(policy_name))` -> `AdminAuthPolicyGetEntitiesResponse`: Fetch all the entities assigned to a particular authentication policy by name.
+- `admin.auth.policy.removeEntities` -> `client.admin_auth_policy_remove_entities(&AdminAuthPolicyRemoveEntitiesRequest::new(policy_name, entity_type, entity_ids))` -> `AdminAuthPolicyRemoveEntitiesResponse`: Remove specified entities from a specified authentication policy.
+
+## admin.barriers
+
+- `admin.barriers.create` -> `client.admin_barriers_create(&AdminBarriersCreateRequest::new(primary_usergroup_id, barriered_from_usergroup_ids, restricted_subjects))` -> `AdminBarriersCreateResponse`: Create an Information Barrier
+- `admin.barriers.delete` -> `client.admin_barriers_delete(&AdminBarriersDeleteRequest::new(barrier_id))` -> `AdminBarriersDeleteResponse`: Delete an existing Information Barrier
+- `admin.barriers.list` -> `client.admin_barriers_list(&AdminBarriersListRequest::new())` -> `AdminBarriersListResponse`: Get all Information Barriers for your organization
+- `admin.barriers.update` -> `client.admin_barriers_update(&AdminBarriersUpdateRequest::new(barrier_id, primary_usergroup_id, barriered_from_usergroup_ids, restricted_subjects))` -> `AdminBarriersUpdateResponse`: Update an existing Information Barrier
+
+## admin.conversations
+
+- `admin.conversations.archive` -> `client.admin_conversations_archive(&AdminConversationsArchiveRequest::new(channel_id))` -> `AdminConversationsArchiveResponse`: Archive a public or private channel.
+- `admin.conversations.bulkArchive` -> `client.admin_conversations_bulk_archive(&AdminConversationsBulkArchiveRequest::new(channel_ids))` -> `AdminConversationsBulkArchiveResponse`: Archive public or private channels in bulk.
+- `admin.conversations.bulkDelete` -> `client.admin_conversations_bulk_delete(&AdminConversationsBulkDeleteRequest::new(channel_ids))` -> `AdminConversationsBulkDeleteResponse`: Delete public or private channels in bulk
+- `admin.conversations.bulkMove` -> `client.admin_conversations_bulk_move(&AdminConversationsBulkMoveRequest::new(target_team_id, channel_ids))` -> `AdminConversationsBulkMoveResponse`: Move public or private channels in bulk.
+- `admin.conversations.bulkSetExcludeFromSlackAi` -> `client.admin_conversations_bulk_set_exclude_from_slack_ai(&AdminConversationsBulkSetExcludeFromSlackAiRequest::new(channel_ids, exclude))` -> `AdminConversationsBulkSetExcludeFromSlackAiResponse`: Exclude channels from Slack AI in bulk
+- `admin.conversations.bulkSetProperties` -> `client.admin_conversations_bulk_set_properties(&AdminConversationsBulkSetPropertiesRequest::new(channel_ids, property))` -> `AdminConversationsBulkSetPropertiesResponse`: Set properties on channels in bulk
+- `admin.conversations.convertToPrivate` -> `client.admin_conversations_convert_to_private(&AdminConversationsConvertToPrivateRequest::new(channel_id))` -> `AdminConversationsConvertToPrivateResponse`: Convert a public channel to a private channel.
+- `admin.conversations.convertToPublic` -> `client.admin_conversations_convert_to_public(&AdminConversationsConvertToPublicRequest::new(channel_id))` -> `AdminConversationsConvertToPublicResponse`: Convert a private channel to a public channel.
+- `admin.conversations.create` -> `client.admin_conversations_create(&AdminConversationsCreateRequest::new(name, is_private))` -> `AdminConversationsCreateResponse`: Create a public or private channel-based conversation.
+- `admin.conversations.createForObjects` -> `client.admin_conversations_create_for_objects(&AdminConversationsCreateForObjectsRequest::new(object_id, salesforce_org_id))` -> `AdminConversationsCreateForObjectsResponse`: Create a Salesforce channel for the corresponding object provided.
+- `admin.conversations.delete` -> `client.admin_conversations_delete(&AdminConversationsDeleteRequest::new(channel_id))` -> `AdminConversationsDeleteResponse`: Delete a public or private channel.
+- `admin.conversations.disconnectShared` -> `client.admin_conversations_disconnect_shared(&AdminConversationsDisconnectSharedRequest::new(channel_id))` -> `AdminConversationsDisconnectSharedResponse`: Disconnect a connected channel from one or more workspaces.
+- `admin.conversations.ekm.listOriginalConnectedChannelInfo` -> `client.admin_conversations_ekm_list_original_connected_channel_info(&AdminConversationsEkmListOriginalConnectedChannelInfoRequest::new())` -> `AdminConversationsEkmListOriginalConnectedChannelInfoResponse`: List all disconnected channels—i.e., channels that were once connected to other workspaces and then disconnected—and the corresponding original channel IDs for key revocation with EKM.
+- `admin.conversations.getConversationPrefs` -> `client.admin_conversations_get_conversation_prefs(&AdminConversationsGetConversationPrefsRequest::new(channel_id))` -> `AdminConversationsGetConversationPrefsResponse`: Get conversation preferences for a public or private channel.
+- `admin.conversations.getCustomRetention` -> `client.admin_conversations_get_custom_retention(&AdminConversationsGetCustomRetentionRequest::new(channel_id))` -> `AdminConversationsGetCustomRetentionResponse`: This API endpoint can be used by any admin to get a conversation's retention policy.
+- `admin.conversations.getTeams` -> `client.admin_conversations_get_teams(&AdminConversationsGetTeamsRequest::new(channel_id))` -> `AdminConversationsGetTeamsResponse`: Get all the workspaces a given public or private channel is connected to within this Enterprise org.
+- `admin.conversations.invite` -> `client.admin_conversations_invite(&AdminConversationsInviteRequest::new(user_ids, channel_id))` -> `AdminConversationsInviteResponse`: Invite a user to a public or private channel.
+- `admin.conversations.linkObjects` -> `client.admin_conversations_link_objects(&AdminConversationsLinkObjectsRequest::new(channel, record_id, salesforce_org_id))` -> `AdminConversationsLinkObjectsResponse`: Link a Salesforce record to a channel
+- `admin.conversations.lookup` -> `client.admin_conversations_lookup(&AdminConversationsLookupRequest::new(team_ids, last_message_activity_before))` -> `AdminConversationsLookupResponse`: Returns channels on the given team using the filters.
+- `admin.conversations.removeCustomRetention` -> `client.admin_conversations_remove_custom_retention(&AdminConversationsRemoveCustomRetentionRequest::new(channel_id))` -> `AdminConversationsRemoveCustomRetentionResponse`: This API endpoint can be used by any admin to remove a conversation's retention policy.
+- `admin.conversations.rename` -> `client.admin_conversations_rename(&AdminConversationsRenameRequest::new(channel_id, name))` -> `AdminConversationsRenameResponse`: Rename a public or private channel.
+- `admin.conversations.restrictAccess.addGroup` -> `client.admin_conversations_restrict_access_add_group(&AdminConversationsRestrictAccessAddGroupRequest::new(group_id, channel_id))` -> `AdminConversationsRestrictAccessAddGroupResponse`: Add an allowlist of IDP groups for accessing a channel
+- `admin.conversations.restrictAccess.listGroups` -> `client.admin_conversations_restrict_access_list_groups(&AdminConversationsRestrictAccessListGroupsRequest::new(channel_id))` -> `AdminConversationsRestrictAccessListGroupsResponse`: List all IDP Groups linked to a channel
+- `admin.conversations.restrictAccess.removeGroup` -> `client.admin_conversations_restrict_access_remove_group(&AdminConversationsRestrictAccessRemoveGroupRequest::new(team_id, group_id, channel_id))` -> `AdminConversationsRestrictAccessRemoveGroupResponse`: Remove a linked IDP group linked from a private channel
+- `admin.conversations.search` -> `client.admin_conversations_search(&AdminConversationsSearchRequest::new())` -> `AdminConversationsSearchResponse`: Search for public or private channels in an Enterprise organization.
+- `admin.conversations.setConversationPrefs` -> `client.admin_conversations_set_conversation_prefs(&AdminConversationsSetConversationPrefsRequest::new(channel_id, prefs))` -> `AdminConversationsSetConversationPrefsResponse`: Set the posting permissions for a public or private channel.
+- `admin.conversations.setCustomRetention` -> `client.admin_conversations_set_custom_retention(&AdminConversationsSetCustomRetentionRequest::new(channel_id, duration_days))` -> `AdminConversationsSetCustomRetentionResponse`: This API endpoint can be used by any admin to set a conversation's retention policy.
+- `admin.conversations.setTeams` -> `client.admin_conversations_set_teams(&AdminConversationsSetTeamsRequest::new(channel_id))` -> `AdminConversationsSetTeamsResponse`: Set the workspaces in an Enterprise org that connect to a public or private channel.
+- `admin.conversations.unarchive` -> `client.admin_conversations_unarchive(&AdminConversationsUnarchiveRequest::new(channel_id))` -> `AdminConversationsUnarchiveResponse`: Unarchive a public or private channel.
+- `admin.conversations.unlinkObjects` -> `client.admin_conversations_unlink_objects(&AdminConversationsUnlinkObjectsRequest::new(channel, new_name))` -> `AdminConversationsUnlinkObjectsResponse`: Unlink a Salesforce record from a channel
+
+## admin.emoji
+
+- `admin.emoji.add` -> `client.admin_emoji_add(&AdminEmojiAddRequest::new(name))` -> `AdminEmojiAddResponse`: Add an emoji.
+- `admin.emoji.addAlias` -> `client.admin_emoji_add_alias(&AdminEmojiAddAliasRequest::new(name, alias_for))` -> `AdminEmojiAddAliasResponse`: Add an emoji alias.
+- `admin.emoji.list` -> `client.admin_emoji_list(&AdminEmojiListRequest::new())` -> `AdminEmojiListResponse`: List emoji for an Enterprise organization.
+- `admin.emoji.remove` -> `client.admin_emoji_remove(&AdminEmojiRemoveRequest::new(name))` -> `AdminEmojiRemoveResponse`: Remove an emoji across an Enterprise organization
+- `admin.emoji.rename` -> `client.admin_emoji_rename(&AdminEmojiRenameRequest::new(name, new_name))` -> `AdminEmojiRenameResponse`: Rename an emoji.
+
+## admin.functions
+
+- `admin.functions.list` -> `client.admin_functions_list(&AdminFunctionsListRequest::new(app_ids))` -> `AdminFunctionsListResponse`: Look up functions by a set of apps.
+- `admin.functions.permissions.lookup` -> `client.admin_functions_permissions_lookup(&AdminFunctionsPermissionsLookupRequest::new(function_ids))` -> `AdminFunctionsPermissionsLookupResponse`: Lookup the visibility of multiple Slack functions and include the users if it is limited to particular named entities.
+- `admin.functions.permissions.set` -> `client.admin_functions_permissions_set(&AdminFunctionsPermissionsSetRequest::new(function_id))` -> `AdminFunctionsPermissionsSetResponse`: Set the visibility of a Slack function and define the users or workspaces if it is set to named_entities.
+
+## admin.inviteRequests
+
+- `admin.inviteRequests.approve` -> `client.admin_invite_requests_approve(&AdminInviteRequestsApproveRequest::new(invite_request_id))` -> `AdminInviteRequestsApproveResponse`: Approve a workspace invite request.
+- `admin.inviteRequests.approved.list` -> `client.admin_invite_requests_approved_list(&AdminInviteRequestsApprovedListRequest::new())` -> `AdminInviteRequestsApprovedListResponse`: List all approved workspace invite requests.
+- `admin.inviteRequests.denied.list` -> `client.admin_invite_requests_denied_list(&AdminInviteRequestsDeniedListRequest::new())` -> `AdminInviteRequestsDeniedListResponse`: List all denied workspace invite requests.
+- `admin.inviteRequests.deny` -> `client.admin_invite_requests_deny(&AdminInviteRequestsDenyRequest::new(invite_request_id))` -> `AdminInviteRequestsDenyResponse`: Deny a workspace invite request.
+- `admin.inviteRequests.list` -> `client.admin_invite_requests_list(&AdminInviteRequestsListRequest::new())` -> `AdminInviteRequestsListResponse`: List all pending workspace invite requests.
+
+## admin.roles
+
+- `admin.roles.addAssignments` -> `client.admin_roles_add_assignments(&AdminRolesAddAssignmentsRequest::new(role_id, entity_ids, user_ids))` -> `AdminRolesAddAssignmentsResponse`: Adds members to the specified role with the specified scopes
+- `admin.roles.listAssignments` -> `client.admin_roles_list_assignments(&AdminRolesListAssignmentsRequest::new())` -> `AdminRolesListAssignmentsResponse`: Lists assignments for all roles across entities. Options to scope results by any combination of roles or entities
+- `admin.roles.removeAssignments` -> `client.admin_roles_remove_assignments(&AdminRolesRemoveAssignmentsRequest::new(role_id, entity_ids, user_ids))` -> `AdminRolesRemoveAssignmentsResponse`: Removes a set of users from a role for the given scopes and entities
+
+## admin.teams
+
+- `admin.teams.admins.list` -> `client.admin_teams_admins_list(&AdminTeamsAdminsListRequest::new(team_id))` -> `AdminTeamsAdminsListResponse`: List all of the admins on a given workspace.
+- `admin.teams.create` -> `client.admin_teams_create(&AdminTeamsCreateRequest::new(team_domain, team_name))` -> `AdminTeamsCreateResponse`: Create an Enterprise team.
+- `admin.teams.list` -> `client.admin_teams_list(&AdminTeamsListRequest::new())` -> `AdminTeamsListResponse`: List all teams in an Enterprise organization
+- `admin.teams.owners.list` -> `client.admin_teams_owners_list(&AdminTeamsOwnersListRequest::new(team_id))` -> `AdminTeamsOwnersListResponse`: List all of the owners on a given workspace.
+- `admin.teams.settings.info` -> `client.admin_teams_settings_info(&AdminTeamsSettingsInfoRequest::new(team_id))` -> `AdminTeamsSettingsInfoResponse`: Fetch information about settings in a workspace
+- `admin.teams.settings.setDefaultChannels` -> `client.admin_teams_settings_set_default_channels(&AdminTeamsSettingsSetDefaultChannelsRequest::new(team_id, channel_ids))` -> `AdminTeamsSettingsSetDefaultChannelsResponse`: Set the default channels of a workspace.
+- `admin.teams.settings.setDescription` -> `client.admin_teams_settings_set_description(&AdminTeamsSettingsSetDescriptionRequest::new(team_id, description))` -> `AdminTeamsSettingsSetDescriptionResponse`: Set the description of a given workspace.
+- `admin.teams.settings.setDiscoverability` -> `client.admin_teams_settings_set_discoverability(&AdminTeamsSettingsSetDiscoverabilityRequest::new(team_id, discoverability))` -> `AdminTeamsSettingsSetDiscoverabilityResponse`: An API method that allows admins to set the discoverability of a given workspace
+- `admin.teams.settings.setIcon` -> `client.admin_teams_settings_set_icon(&AdminTeamsSettingsSetIconRequest::new(image_url, team_id))` -> `AdminTeamsSettingsSetIconResponse`: Sets the icon of a workspace.
+- `admin.teams.settings.setName` -> `client.admin_teams_settings_set_name(&AdminTeamsSettingsSetNameRequest::new(team_id, name))` -> `AdminTeamsSettingsSetNameResponse`: Set the name of a given workspace.
+
+## admin.usergroups
+
+- `admin.usergroups.addChannels` -> `client.admin_usergroups_add_channels(&AdminUsergroupsAddChannelsRequest::new(usergroup_id, channel_ids))` -> `AdminUsergroupsAddChannelsResponse`: Add up to one hundred default channels to an IDP group.
+- `admin.usergroups.addTeams` -> `client.admin_usergroups_add_teams(&AdminUsergroupsAddTeamsRequest::new(usergroup_id, team_ids))` -> `AdminUsergroupsAddTeamsResponse`: Associate one or more default workspaces with an organization-wide IDP group.
+- `admin.usergroups.addUsers` -> `client.admin_usergroups_add_users(&AdminUsergroupsAddUsersRequest::new(id, users))` -> `AdminUsergroupsAddUsersResponse`: Add members to an existing organizational usergroup.
+- `admin.usergroups.create` -> `client.admin_usergroups_create(&AdminUsergroupsCreateRequest::new(name))` -> `AdminUsergroupsCreateResponse`: Create a new organizational usergroup.
+- `admin.usergroups.fetch` -> `client.admin_usergroups_fetch(&AdminUsergroupsFetchRequest::new(id))` -> `AdminUsergroupsFetchResponse`: Fetch an organizational usergroup.
+- `admin.usergroups.listChannels` -> `client.admin_usergroups_list_channels(&AdminUsergroupsListChannelsRequest::new(usergroup_id))` -> `AdminUsergroupsListChannelsResponse`: List the channels linked to an org-level IDP group (user group).
+- `admin.usergroups.removeChannels` -> `client.admin_usergroups_remove_channels(&AdminUsergroupsRemoveChannelsRequest::new(usergroup_id, channel_ids))` -> `AdminUsergroupsRemoveChannelsResponse`: Remove one or more default channels from an org-level IDP group (user group).
+- `admin.usergroups.removeTeams` -> `client.admin_usergroups_remove_teams(&AdminUsergroupsRemoveTeamsRequest::new(usergroup_id, team_ids))` -> `AdminUsergroupsRemoveTeamsResponse`: Remove one or more default workspaces from an organization-wide IDP Group or Admin Group
+- `admin.usergroups.removeUsers` -> `client.admin_usergroups_remove_users(&AdminUsergroupsRemoveUsersRequest::new(id, users))` -> `AdminUsergroupsRemoveUsersResponse`: Remove members from an existing organizational usergroup.
+- `admin.usergroups.update` -> `client.admin_usergroups_update(&AdminUsergroupsUpdateRequest::new(id))` -> `AdminUsergroupsUpdateResponse`: Update one or more properties of an existing organizational usergroup.
+- `admin.usergroups.uploadUsers` -> `client.admin_usergroups_upload_users(&AdminUsergroupsUploadUsersRequest::new(id))` -> `AdminUsergroupsUploadUsersResponse`: Add members to an existing organizational usergroup in bulk via CSV upload.
+
+## admin.users
+
+- `admin.users.assign` -> `client.admin_users_assign(&AdminUsersAssignRequest::new(team_id, user_id))` -> `AdminUsersAssignResponse`: Add an Enterprise user to a workspace.
+- `admin.users.getExpiration` -> `client.admin_users_get_expiration(&AdminUsersGetExpirationRequest::new(user_id))` -> `AdminUsersGetExpirationResponse`: Fetches the expiration timestamp for a guest.
+- `admin.users.invite` -> `client.admin_users_invite(&AdminUsersInviteRequest::new(team_id, email, channel_ids))` -> `AdminUsersInviteResponse`: Invite a user to a workspace.
+- `admin.users.list` -> `client.admin_users_list(&AdminUsersListRequest::new())` -> `AdminUsersListResponse`: List users on a workspace
+- `admin.users.remove` -> `client.admin_users_remove(&AdminUsersRemoveRequest::new(team_id, user_id))` -> `AdminUsersRemoveResponse`: Remove a user from a workspace.
+- `admin.users.session.clearSettings` -> `client.admin_users_session_clear_settings(&AdminUsersSessionClearSettingsRequest::new(user_ids))` -> `AdminUsersSessionClearSettingsResponse`: Clear user-specific session settings—the session duration and what happens when the client closes—for a list of users.
+- `admin.users.session.getSettings` -> `client.admin_users_session_get_settings(&AdminUsersSessionGetSettingsRequest::new(user_ids))` -> `AdminUsersSessionGetSettingsResponse`: Get user-specific session settings—the session duration and what happens when the client closes—given a list of users.
+- `admin.users.session.invalidate` -> `client.admin_users_session_invalidate(&AdminUsersSessionInvalidateRequest::new(user_id, session_id))` -> `AdminUsersSessionInvalidateResponse`: Revoke a single session for a user. The user will be forced to login to Slack.
+- `admin.users.session.list` -> `client.admin_users_session_list(&AdminUsersSessionListRequest::new())` -> `AdminUsersSessionListResponse`: List active user sessions for an organization
+- `admin.users.session.reset` -> `client.admin_users_session_reset(&AdminUsersSessionResetRequest::new(user_id))` -> `AdminUsersSessionResetResponse`: Wipes all valid sessions on all devices for a given user
+- `admin.users.session.resetBulk` -> `client.admin_users_session_reset_bulk(&AdminUsersSessionResetBulkRequest::new(user_ids))` -> `AdminUsersSessionResetBulkResponse`: Enqueues an asynchronous job to wipe all valid sessions on all devices for a given list of users
+- `admin.users.session.setSettings` -> `client.admin_users_session_set_settings(&AdminUsersSessionSetSettingsRequest::new(user_ids))` -> `AdminUsersSessionSetSettingsResponse`: Configure the user-level session settings—the session duration and what happens when the client closes—for one or more users.
+- `admin.users.setAdmin` -> `client.admin_users_set_admin(&AdminUsersSetAdminRequest::new(team_id, user_id))` -> `AdminUsersSetAdminResponse`: Set an existing regular user or owner to be a workspace or org admin.
+- `admin.users.setExpiration` -> `client.admin_users_set_expiration(&AdminUsersSetExpirationRequest::new(user_id, expiration_ts))` -> `AdminUsersSetExpirationResponse`: Set an expiration for a guest user
+- `admin.users.setOwner` -> `client.admin_users_set_owner(&AdminUsersSetOwnerRequest::new(team_id, user_id))` -> `AdminUsersSetOwnerResponse`: Set an existing regular user or admin to be a workspace or org owner.
+- `admin.users.setRegular` -> `client.admin_users_set_regular(&AdminUsersSetRegularRequest::new(team_id, user_id))` -> `AdminUsersSetRegularResponse`: Set an existing guest user, admin user, or owner to be a regular user.
+- `admin.users.unsupportedVersions.export` -> `client.admin_users_unsupported_versions_export(&AdminUsersUnsupportedVersionsExportRequest::new())` -> `AdminUsersUnsupportedVersionsExportResponse`: Ask Slack to send you an export listing all workspace members using unsupported software, presented as a zipped CSV file.
+
+## admin.workflows
+
+- `admin.workflows.collaborators.add` -> `client.admin_workflows_collaborators_add(&AdminWorkflowsCollaboratorsAddRequest::new(workflow_ids, collaborator_ids))` -> `AdminWorkflowsCollaboratorsAddResponse`: Add collaborators to workflows within the team or enterprise
+- `admin.workflows.collaborators.remove` -> `client.admin_workflows_collaborators_remove(&AdminWorkflowsCollaboratorsRemoveRequest::new(workflow_ids, collaborator_ids))` -> `AdminWorkflowsCollaboratorsRemoveResponse`: Remove collaborators from workflows within the team or enterprise
+- `admin.workflows.permissions.lookup` -> `client.admin_workflows_permissions_lookup(&AdminWorkflowsPermissionsLookupRequest::new(workflow_ids))` -> `AdminWorkflowsPermissionsLookupResponse`: Look up the permissions for a set of workflows
+- `admin.workflows.search` -> `client.admin_workflows_search(&AdminWorkflowsSearchRequest::new())` -> `AdminWorkflowsSearchResponse`: Search workflows within the team or enterprise
+- `admin.workflows.triggers.types.permissions.lookup` -> `client.admin_workflows_triggers_types_permissions_lookup(&AdminWorkflowsTriggersTypesPermissionsLookupRequest::new(trigger_type_ids))` -> `AdminWorkflowsTriggersTypesPermissionsLookupResponse`: List the permissions for using each trigger type
+- `admin.workflows.triggers.types.permissions.set` -> `client.admin_workflows_triggers_types_permissions_set(&AdminWorkflowsTriggersTypesPermissionsSetRequest::new(id))` -> `AdminWorkflowsTriggersTypesPermissionsSetResponse`: Set the permissions for using a trigger type
+- `admin.workflows.unpublish` -> `client.admin_workflows_unpublish(&AdminWorkflowsUnpublishRequest::new(workflow_ids))` -> `AdminWorkflowsUnpublishResponse`: Unpublish workflows within the team or enterprise
+
+## agents
+
+- `agents.sessions.rename` -> `client.agents_sessions_rename(&AgentsSessionsRenameRequest::new(title))` -> `AgentsSessionsRenameResponse`: Rename an agent session.
+- `agents.sessions.setStatus` -> `client.agents_sessions_set_status(&AgentsSessionsSetStatusRequest::new(status))` -> `AgentsSessionsSetStatusResponse`: Set an agent session's lifecycle status, creating the session if needed.
+
+## api
+
+- `api.test` -> `client.api_test(&ApiTestRequest::new())` -> `ApiTestResponse`: Checks API calling code.
+
+## apps
+
+- `apps.activities.list` -> `client.apps_activities_list(&AppsActivitiesListRequest::new(app_id))` -> `AppsActivitiesListResponse`: Get logs for a specified app
+- `apps.auth.external.delete` -> `client.apps_auth_external_delete(&AppsAuthExternalDeleteRequest::new())` -> `AppsAuthExternalDeleteResponse`: Delete external auth tokens only on the Slack side
+- `apps.auth.external.get` -> `client.apps_auth_external_get(&AppsAuthExternalGetRequest::new(external_token_id))` -> `AppsAuthExternalGetResponse`: Get the access token for the provided token ID
+- `apps.connections.open` -> `client.apps_connections_open(&AppsConnectionsOpenRequest::new())` -> `AppsConnectionsOpenResponse`: Generate a temporary Socket Mode WebSocket URL that your app can connect to in order to receive events and interactive payloads over.
+- `apps.datastore.bulkDelete` -> `client.apps_datastore_bulk_delete(&AppsDatastoreBulkDeleteRequest::new(datastore, ids))` -> `AppsDatastoreBulkDeleteResponse`: Delete items from a datastore in bulk
+- `apps.datastore.bulkGet` -> `client.apps_datastore_bulk_get(&AppsDatastoreBulkGetRequest::new(datastore, ids))` -> `AppsDatastoreBulkGetResponse`: Get items from a datastore in bulk
+- `apps.datastore.bulkPut` -> `client.apps_datastore_bulk_put(&AppsDatastoreBulkPutRequest::new(datastore, items))` -> `AppsDatastoreBulkPutResponse`: Creates or replaces existing items in bulk
+- `apps.datastore.count` -> `client.apps_datastore_count(&AppsDatastoreCountRequest::new(datastore))` -> `AppsDatastoreCountResponse`: Count the number of items in a datastore that match a query
+- `apps.datastore.delete` -> `client.apps_datastore_delete(&AppsDatastoreDeleteRequest::new(datastore, id))` -> `AppsDatastoreDeleteResponse`: Delete an item from a datastore
+- `apps.datastore.get` -> `client.apps_datastore_get(&AppsDatastoreGetRequest::new(datastore, id))` -> `AppsDatastoreGetResponse`: Get an item from a datastore
+- `apps.datastore.put` -> `client.apps_datastore_put(&AppsDatastorePutRequest::new(datastore, item))` -> `AppsDatastorePutResponse`: Creates a new item, or replaces an old item with a new item.
+- `apps.datastore.query` -> `client.apps_datastore_query(&AppsDatastoreQueryRequest::new(datastore))` -> `AppsDatastoreQueryResponse`: Query a datastore for items
+- `apps.datastore.update` -> `client.apps_datastore_update(&AppsDatastoreUpdateRequest::new(datastore, item))` -> `AppsDatastoreUpdateResponse`: Edits an existing item's attributes, or adds a new item if it does not already exist.
+- `apps.event.authorizations.list` -> `client.apps_event_authorizations_list(&AppsEventAuthorizationsListRequest::new(event_context))` -> `AppsEventAuthorizationsListResponse`: Get a list of authorizations for the given event context. Each authorization represents an app installation that the event is visible to.
+- `apps.icon.set` -> `client.apps_icon_set(&AppsIconSetRequest::new(app_id))` -> `AppsIconSetResponse`: Sets the app icon
+- `apps.managed.permissions.set` -> `client.apps_managed_permissions_set(&AppsManagedPermissionsSetRequest::new(app_id, permissions))` -> `AppsManagedPermissionsSetResponse`: Set who can interact with a managed app
+- `apps.manifest.create` -> `client.apps_manifest_create(&AppsManifestCreateRequest::new(manifest))` -> `AppsManifestCreateResponse`: Create an app from an app manifest.
+- `apps.manifest.delete` -> `client.apps_manifest_delete(&AppsManifestDeleteRequest::new(app_id))` -> `AppsManifestDeleteResponse`: Permanently deletes an app created through app manifests
+- `apps.manifest.export` -> `client.apps_manifest_export(&AppsManifestExportRequest::new(app_id))` -> `AppsManifestExportResponse`: Export an app manifest from an existing app
+- `apps.manifest.update` -> `client.apps_manifest_update(&AppsManifestUpdateRequest::new(manifest, app_id))` -> `AppsManifestUpdateResponse`: Update an app from an app manifest
+- `apps.manifest.validate` -> `client.apps_manifest_validate(&AppsManifestValidateRequest::new(manifest))` -> `AppsManifestValidateResponse`: Validate an app manifest
+- `apps.uninstall` -> `client.apps_uninstall(&AppsUninstallRequest::new(client_id, client_secret))` -> `AppsUninstallResponse`: Uninstalls your app from a workspace.
+- `apps.user.connection.update` -> `client.apps_user_connection_update(&AppsUserConnectionUpdateRequest::new(user_id, status))` -> `AppsUserConnectionUpdateResponse`: Updates the connection status between a user and an app.
+
+## assistant
+
+- `assistant.search.context` -> `client.assistant_search_context(&AssistantSearchContextRequest::new(query))` -> `AssistantSearchContextResponse`: Searches messages, files, channels and users across your Slack organization.
+- `assistant.search.info` -> `client.assistant_search_info(&AssistantSearchInfoRequest::new())` -> `AssistantSearchInfoResponse`: Returns search capabilities on a given team.
+- `assistant.threads.setStatus` -> `client.assistant_threads_set_status(&AssistantThreadsSetStatusRequest::new(channel_id, thread_ts, status))` -> `AssistantThreadsSetStatusResponse`: Set the status for an AI assistant thread.
+- `assistant.threads.setSuggestedPrompts` -> `client.assistant_threads_set_suggested_prompts(&AssistantThreadsSetSuggestedPromptsRequest::new(channel_id, prompts))` -> `AssistantThreadsSetSuggestedPromptsResponse`: Set suggested prompts for the given assistant thread
+- `assistant.threads.setTitle` -> `client.assistant_threads_set_title(&AssistantThreadsSetTitleRequest::new(channel_id, thread_ts, title))` -> `AssistantThreadsSetTitleResponse`: Set the title for the given assistant thread
+
+## auth
+
+- `auth.revoke` -> `client.auth_revoke(&AuthRevokeRequest::new())` -> `AuthRevokeResponse`: Revokes a token.
+- `auth.teams.list` -> `client.auth_teams_list(&AuthTeamsListRequest::new())` -> `AuthTeamsListResponse`: Obtain a full list of workspaces your org-wide app has been approved for.
+- `auth.test` -> `client.auth_test(&AuthTestRequest::new())` -> `AuthTestResponse`: Checks authentication & identity.
+
+## blocks
+
+- `blocks.validate` -> `client.blocks_validate(&BlocksValidateRequest::new())` -> `BlocksValidateResponse`: Validates blocks, messages, and views Block Kit JSON payloads.
+
+## bookmarks
+
+- `bookmarks.add` -> `client.bookmarks_add(&BookmarksAddRequest::new(title, r#type))` -> `BookmarksAddResponse`: Add bookmark to a channel.
+- `bookmarks.edit` -> `client.bookmarks_edit(&BookmarksEditRequest::new())` -> `BookmarksEditResponse`: Edit bookmark.
+- `bookmarks.list` -> `client.bookmarks_list(&BookmarksListRequest::new())` -> `BookmarksListResponse`: List bookmark for the channel.
+- `bookmarks.remove` -> `client.bookmarks_remove(&BookmarksRemoveRequest::new())` -> `BookmarksRemoveResponse`: Remove bookmark from the channel.
+
+## bots
+
+- `bots.info` -> `client.bots_info(&BotsInfoRequest::new())` -> `BotsInfoResponse`: Gets information about a bot user.
+
+## calls
+
+- `calls.add` -> `client.calls_add(&CallsAddRequest::new(external_unique_id, join_url))` -> `CallsAddResponse`: Registers a new Call.
+- `calls.end` -> `client.calls_end(&CallsEndRequest::new(id))` -> `CallsEndResponse`: Ends a Call.
+- `calls.info` -> `client.calls_info(&CallsInfoRequest::new(id))` -> `CallsInfoResponse`: Returns information about a Call.
+- `calls.participants.add` -> `client.calls_participants_add(&CallsParticipantsAddRequest::new(id, users))` -> `CallsParticipantsAddResponse`: Registers new participants added to a Call.
+- `calls.participants.remove` -> `client.calls_participants_remove(&CallsParticipantsRemoveRequest::new(id, users))` -> `CallsParticipantsRemoveResponse`: Registers participants removed from a Call.
+- `calls.update` -> `client.calls_update(&CallsUpdateRequest::new(id))` -> `CallsUpdateResponse`: Updates information about a Call.
+
+## canvases
+
+- `canvases.access.delete` -> `client.canvases_access_delete(&CanvasesAccessDeleteRequest::new(canvas_id))` -> `CanvasesAccessDeleteResponse`: Remove access to a canvas for specified entities
+- `canvases.access.set` -> `client.canvases_access_set(&CanvasesAccessSetRequest::new(canvas_id, access_level))` -> `CanvasesAccessSetResponse`: Sets the access level to a canvas for specified entities
+- `canvases.create` -> `client.canvases_create(&CanvasesCreateRequest::new())` -> `CanvasesCreateResponse`: Create canvas for a user
+- `canvases.delete` -> `client.canvases_delete(&CanvasesDeleteRequest::new(canvas_id))` -> `CanvasesDeleteResponse`: Deletes a canvas
+- `canvases.edit` -> `client.canvases_edit(&CanvasesEditRequest::new(canvas_id, changes))` -> `CanvasesEditResponse`: Update an existing canvas
+- `canvases.getContent` -> `client.canvases_get_content(&CanvasesGetContentRequest::new(canvas_id))` -> `CanvasesGetContentResponse`: Get the content of a canvas as markdown (default) or HTML.
+- `canvases.sections.lookup` -> `client.canvases_sections_lookup(&CanvasesSectionsLookupRequest::new(canvas_id, criteria))` -> `CanvasesSectionsLookupResponse`: Find sections matching the provided criteria
+
+## chat
+
+- `chat.appendStream` -> `client.chat_append_stream(&ChatAppendStreamRequest::new(channel, ts))` -> `ChatAppendStreamResponse`: Append text to an existing streaming conversation
+- `chat.delete` -> `client.chat_delete(&ChatDeleteRequest::new(channel, ts))` -> `ChatDeleteResponse`: Deletes a message.
+- `chat.deleteScheduledMessage` -> `client.chat_delete_scheduled_message(&ChatDeleteScheduledMessageRequest::new(channel, scheduled_message_id))` -> `ChatDeleteScheduledMessageResponse`: Deletes a pending scheduled message from the queue.
+- `chat.getPermalink` -> `client.chat_get_permalink(&ChatGetPermalinkRequest::new(channel, message_ts))` -> `ChatGetPermalinkResponse`: Retrieve a permalink URL for a specific extant message
+- `chat.meMessage` -> `client.chat_me_message(&ChatMeMessageRequest::new(channel, text))` -> `ChatMeMessageResponse`: Share a me message into a channel.
+- `chat.postEphemeral` -> `client.chat_post_ephemeral(&ChatPostEphemeralRequest::new(channel, user))` -> `ChatPostEphemeralResponse`: Sends an ephemeral message to a user in a channel.
+- `chat.postMessage` -> `client.chat_post_message(&ChatPostMessageRequest::new(channel))` -> `ChatPostMessageResponse`: Sends a message to a channel.
+- `chat.scheduleMessage` -> `client.chat_schedule_message(&ChatScheduleMessageRequest::new(channel, post_at))` -> `ChatScheduleMessageResponse`: Schedules a message to be sent to a channel.
+- `chat.scheduledMessages.list` -> `client.chat_scheduled_messages_list(&ChatScheduledMessagesListRequest::new())` -> `ChatScheduledMessagesListResponse`: Returns a list of scheduled messages.
+- `chat.startStream` -> `client.chat_start_stream(&ChatStartStreamRequest::new(channel))` -> `ChatStartStreamResponse`: Start a new streaming conversation
+- `chat.stopStream` -> `client.chat_stop_stream(&ChatStopStreamRequest::new(channel, ts))` -> `ChatStopStreamResponse`: Stop a streaming conversation
+- `chat.unfurl` -> `client.chat_unfurl(&ChatUnfurlRequest::new())` -> `ChatUnfurlResponse`: Provide custom unfurl behavior for user-posted URLs
+- `chat.update` -> `client.chat_update(&ChatUpdateRequest::new(channel, ts))` -> `ChatUpdateResponse`: Updates a message.
+
+## conversations
+
+- `conversations.acceptSharedInvite` -> `client.conversations_accept_shared_invite(&ConversationsAcceptSharedInviteRequest::new(channel_name))` -> `ConversationsAcceptSharedInviteResponse`: Accepts an invitation to a Slack Connect channel.
+- `conversations.approveSharedInvite` -> `client.conversations_approve_shared_invite(&ConversationsApproveSharedInviteRequest::new(invite_id))` -> `ConversationsApproveSharedInviteResponse`: Approves an invitation to a Slack Connect channel
+- `conversations.archive` -> `client.conversations_archive(&ConversationsArchiveRequest::new(channel))` -> `ConversationsArchiveResponse`: Archives a conversation.
+- `conversations.canvases.create` -> `client.conversations_canvases_create(&ConversationsCanvasesCreateRequest::new(channel_id))` -> `ConversationsCanvasesCreateResponse`: Create a channel canvas for a channel
+- `conversations.close` -> `client.conversations_close(&ConversationsCloseRequest::new(channel))` -> `ConversationsCloseResponse`: Closes a direct message or multi-person direct message.
+- `conversations.create` -> `client.conversations_create(&ConversationsCreateRequest::new(name))` -> `ConversationsCreateResponse`: Initiates a public or private channel-based conversation
+- `conversations.declineSharedInvite` -> `client.conversations_decline_shared_invite(&ConversationsDeclineSharedInviteRequest::new(invite_id))` -> `ConversationsDeclineSharedInviteResponse`: Declines a Slack Connect channel invite.
+- `conversations.externalInvitePermissions.set` -> `client.conversations_external_invite_permissions_set(&ConversationsExternalInvitePermissionsSetRequest::new(channel, target_team, action))` -> `ConversationsExternalInvitePermissionsSetResponse`: Upgrade or downgrade Slack Connect channel permissions between 'can post only' and 'can post and invite'.
+- `conversations.history` -> `client.conversations_history(&ConversationsHistoryRequest::new(channel))` -> `ConversationsHistoryResponse`: Fetches a conversation's history of messages and events.
+- `conversations.info` -> `client.conversations_info(&ConversationsInfoRequest::new(channel))` -> `ConversationsInfoResponse`: Retrieve information about a conversation.
+- `conversations.invite` -> `client.conversations_invite(&ConversationsInviteRequest::new(channel, users))` -> `ConversationsInviteResponse`: Invites users to a channel.
+- `conversations.inviteShared` -> `client.conversations_invite_shared(&ConversationsInviteSharedRequest::new(channel))` -> `ConversationsInviteSharedResponse`: Sends an invitation to a Slack Connect channel
+- `conversations.join` -> `client.conversations_join(&ConversationsJoinRequest::new(channel))` -> `ConversationsJoinResponse`: Joins an existing conversation.
+- `conversations.kick` -> `client.conversations_kick(&ConversationsKickRequest::new(channel))` -> `ConversationsKickResponse`: Removes a user from a conversation.
+- `conversations.leave` -> `client.conversations_leave(&ConversationsLeaveRequest::new(channel))` -> `ConversationsLeaveResponse`: Leaves a conversation.
+- `conversations.list` -> `client.conversations_list(&ConversationsListRequest::new())` -> `ConversationsListResponse`: Lists all channels in a Slack team.
+- `conversations.listConnectInvites` -> `client.conversations_list_connect_invites(&ConversationsListConnectInvitesRequest::new())` -> `ConversationsListConnectInvitesResponse`: Lists shared channel invites that have been generated or received but have not been approved by all parties
+- `conversations.mark` -> `client.conversations_mark(&ConversationsMarkRequest::new(channel, ts))` -> `ConversationsMarkResponse`: Sets the read cursor in a channel.
+- `conversations.members` -> `client.conversations_members(&ConversationsMembersRequest::new(channel))` -> `ConversationsMembersResponse`: Retrieve members of a conversation.
+- `conversations.open` -> `client.conversations_open(&ConversationsOpenRequest::new())` -> `ConversationsOpenResponse`: Opens or resumes a direct message or multi-person direct message.
+- `conversations.rename` -> `client.conversations_rename(&ConversationsRenameRequest::new(channel, name))` -> `ConversationsRenameResponse`: Renames a conversation.
+- `conversations.replies` -> `client.conversations_replies(&ConversationsRepliesRequest::new(channel, ts))` -> `ConversationsRepliesResponse`: Retrieve a thread of messages posted to a conversation
+- `conversations.requestSharedInvite.approve` -> `client.conversations_request_shared_invite_approve(&ConversationsRequestSharedInviteApproveRequest::new(invite_id))` -> `ConversationsRequestSharedInviteApproveResponse`: Approves a request to add an external user to a channel and sends them a Slack Connect invite
+- `conversations.requestSharedInvite.deny` -> `client.conversations_request_shared_invite_deny(&ConversationsRequestSharedInviteDenyRequest::new(invite_id))` -> `ConversationsRequestSharedInviteDenyResponse`: Denies a request to invite an external user to a channel
+- `conversations.requestSharedInvite.list` -> `client.conversations_request_shared_invite_list(&ConversationsRequestSharedInviteListRequest::new())` -> `ConversationsRequestSharedInviteListResponse`: Lists requests to add external users to channels with ability to filter.
+- `conversations.setPurpose` -> `client.conversations_set_purpose(&ConversationsSetPurposeRequest::new(channel, purpose))` -> `ConversationsSetPurposeResponse`: Sets the channel description.
+- `conversations.setTopic` -> `client.conversations_set_topic(&ConversationsSetTopicRequest::new(channel, topic))` -> `ConversationsSetTopicResponse`: Sets the topic for a conversation.
+- `conversations.unarchive` -> `client.conversations_unarchive(&ConversationsUnarchiveRequest::new(channel))` -> `ConversationsUnarchiveResponse`: Reverses conversation archival.
+
+## dialog
+
+- `dialog.open` -> `client.dialog_open(&DialogOpenRequest::new(dialog, trigger_id))` -> `DialogOpenResponse`: Open a dialog with a user
+
+## dnd
+
+- `dnd.endDnd` -> `client.dnd_end_dnd(&DndEndDndRequest::new())` -> `DndEndDndResponse`: Ends the current user's Do Not Disturb session immediately.
+- `dnd.endSnooze` -> `client.dnd_end_snooze(&DndEndSnoozeRequest::new())` -> `DndEndSnoozeResponse`: Ends the current user's snooze mode immediately.
+- `dnd.info` -> `client.dnd_info(&DndInfoRequest::new())` -> `DndInfoResponse`: Retrieves a user's current Do Not Disturb status.
+- `dnd.setSnooze` -> `client.dnd_set_snooze(&DndSetSnoozeRequest::new(num_minutes))` -> `DndSetSnoozeResponse`: Turns on Do Not Disturb mode for the current user, or changes its duration.
+- `dnd.teamInfo` -> `client.dnd_team_info(&DndTeamInfoRequest::new(users))` -> `DndTeamInfoResponse`: Retrieves the Do Not Disturb status for up to 50 users on a team.
+
+## emoji
+
+- `emoji.list` -> `client.emoji_list(&EmojiListRequest::new())` -> `EmojiListResponse`: Lists custom emoji for a team.
+
+## entity
+
+- `entity.acknowledgeCommentAction` -> `client.entity_acknowledge_comment_action(&EntityAcknowledgeCommentActionRequest::new(trigger_id))` -> `EntityAcknowledgeCommentActionResponse`: Acknowledge a comment post, edit, or delete on a Work Object. Apps call this method to confirm they have processed a comment action.
+- `entity.presentComments` -> `client.entity_present_comments(&EntityPresentCommentsRequest::new(comments, trigger_id))` -> `EntityPresentCommentsResponse`: Provide comments for Work Objects. Apps call this method to send per-user flexpane comment data to the client.
+- `entity.presentDetails` -> `client.entity_present_details(&EntityPresentDetailsRequest::new(trigger_id))` -> `EntityPresentDetailsResponse`: Provide custom flexpane behavior for Work Objects. Apps call this method to send per-user flexpane metadata to the client.
+
+## files
+
+- `files.comments.delete` -> `client.files_comments_delete(&FilesCommentsDeleteRequest::new(file, id))` -> `FilesCommentsDeleteResponse`: Deletes an existing comment on a file.
+- `files.completeUploadExternal` -> `client.files_complete_upload_external(&FilesCompleteUploadExternalRequest::new(files))` -> `FilesCompleteUploadExternalResponse`: Finishes an upload started with files.getUploadURLExternal
+- `files.delete` -> `client.files_delete(&FilesDeleteRequest::new(file))` -> `FilesDeleteResponse`: Deletes a file.
+- `files.getUploadURLExternal` -> `client.files_get_upload_url_external(&FilesGetUploadUrlExternalRequest::new(length, filename))` -> `FilesGetUploadUrlExternalResponse`: Gets a URL for an edge external file upload
+- `files.info` -> `client.files_info(&FilesInfoRequest::new(file))` -> `FilesInfoResponse`: Gets information about a file.
+- `files.list` -> `client.files_list(&FilesListRequest::new())` -> `FilesListResponse`: List for a team, in a channel, or from a user with applied filters.
+- `files.remote.add` -> `client.files_remote_add(&FilesRemoteAddRequest::new(external_id, external_url, title))` -> `FilesRemoteAddResponse`: Adds a file from a remote service
+- `files.remote.info` -> `client.files_remote_info(&FilesRemoteInfoRequest::new())` -> `FilesRemoteInfoResponse`: Retrieve information about a remote file added to Slack
+- `files.remote.list` -> `client.files_remote_list(&FilesRemoteListRequest::new())` -> `FilesRemoteListResponse`: Retrieve information about a remote file added to Slack
+- `files.remote.remove` -> `client.files_remote_remove(&FilesRemoteRemoveRequest::new())` -> `FilesRemoteRemoveResponse`: Remove a remote file.
+- `files.remote.share` -> `client.files_remote_share(&FilesRemoteShareRequest::new(channels))` -> `FilesRemoteShareResponse`: Share a remote file into a channel.
+- `files.remote.update` -> `client.files_remote_update(&FilesRemoteUpdateRequest::new())` -> `FilesRemoteUpdateResponse`: Updates an existing remote file.
+- `files.revokePublicURL` -> `client.files_revoke_public_url(&FilesRevokePublicUrlRequest::new(file))` -> `FilesRevokePublicUrlResponse`: Revokes public/external sharing access for a file
+- `files.sharedPublicURL` -> `client.files_shared_public_url(&FilesSharedPublicUrlRequest::new(file))` -> `FilesSharedPublicUrlResponse`: Enables a file for public/external sharing.
+
+## functions
+
+- `functions.completeError` -> `client.functions_complete_error(&FunctionsCompleteErrorRequest::new(function_execution_id, error))` -> `FunctionsCompleteErrorResponse`: Signal that a function failed to complete
+- `functions.completeSuccess` -> `client.functions_complete_success(&FunctionsCompleteSuccessRequest::new(function_execution_id, outputs))` -> `FunctionsCompleteSuccessResponse`: Signal the successful completion of a function
+- `functions.distributions.permissions.add` -> `client.functions_distributions_permissions_add(&FunctionsDistributionsPermissionsAddRequest::new())` -> `FunctionsDistributionsPermissionsAddResponse`: Grant users access to a custom slack function if its permission_type is set to named_entities
+- `functions.distributions.permissions.list` -> `client.functions_distributions_permissions_list(&FunctionsDistributionsPermissionsListRequest::new())` -> `FunctionsDistributionsPermissionsListResponse`: List the access type of a custom slack function and include the users, team or org ids with access if its permission_type is set to named_entities
+- `functions.distributions.permissions.remove` -> `client.functions_distributions_permissions_remove(&FunctionsDistributionsPermissionsRemoveRequest::new())` -> `FunctionsDistributionsPermissionsRemoveResponse`: Revoke user access to a custom slack function if permission_type set to named_entities
+- `functions.distributions.permissions.set` -> `client.functions_distributions_permissions_set(&FunctionsDistributionsPermissionsSetRequest::new())` -> `FunctionsDistributionsPermissionsSetResponse`: Set the access type of a custom slack function and define the users, team or org ids to be granted access if permission_type is set to named_entities
+- `functions.workflows.steps.list` -> `client.functions_workflows_steps_list(&FunctionsWorkflowsStepsListRequest::new(function_id))` -> `FunctionsWorkflowsStepsListResponse`: List the steps of a specific function of a workflow's versions
+- `functions.workflows.steps.responses.export` -> `client.functions_workflows_steps_responses_export(&FunctionsWorkflowsStepsResponsesExportRequest::new(step_id))` -> `FunctionsWorkflowsStepsResponsesExportResponse`: Download form responses of a workflow
+
+## migration
+
+- `migration.exchange` -> `client.migration_exchange(&MigrationExchangeRequest::new(users))` -> `MigrationExchangeResponse`: For Enterprise organization workspaces, map local user IDs to global user IDs
+
+## oauth
+
+- `oauth.access` -> `client.oauth_access(&OauthAccessRequest::new())` -> `OauthAccessResponse`: Exchanges a temporary OAuth verifier code for an access token.
+- `oauth.v2.access` -> `client.oauth_v2_access(&OauthV2AccessRequest::new())` -> `OauthV2AccessResponse`: Exchanges a temporary OAuth verifier code for an access token.
+- `oauth.v2.beginShortTokenRotation` -> `client.oauth_v2_begin_short_token_rotation(&OauthV2BeginShortTokenRotationRequest::new(client_id, client_secret))` -> `OauthV2BeginShortTokenRotationResponse`: Begins rotating the secret on an API token with a short secret.
+- `oauth.v2.completeShortTokenRotation` -> `client.oauth_v2_complete_short_token_rotation(&OauthV2CompleteShortTokenRotationRequest::new(client_id, client_secret, new_token))` -> `OauthV2CompleteShortTokenRotationResponse`: Finishes rotating the secret on an API token with a short secret.
+- `oauth.v2.exchange` -> `client.oauth_v2_exchange(&OauthV2ExchangeRequest::new(client_id, client_secret))` -> `OauthV2ExchangeResponse`: Exchanges a legacy access token for a new expiring access token and refresh token
+- `oauth.v2.user.access` -> `client.oauth_v2_user_access(&OauthV2UserAccessRequest::new())` -> `OauthV2UserAccessResponse`: Exchanges a temporary OAuth verifier code for a user access token.
+
+## openid
+
+- `openid.connect.token` -> `client.openid_connect_token(&OpenidConnectTokenRequest::new())` -> `OpenidConnectTokenResponse`: Exchanges a temporary OAuth verifier code for an access token for Sign in with Slack.
+- `openid.connect.userInfo` -> `client.openid_connect_user_info(&OpenidConnectUserInfoRequest::new())` -> `OpenidConnectUserInfoResponse`: Get the identity of a user who has authorized Sign in with Slack.
+
+## pins
+
+- `pins.add` -> `client.pins_add(&PinsAddRequest::new(channel))` -> `PinsAddResponse`: Pins an item to a channel.
+- `pins.list` -> `client.pins_list(&PinsListRequest::new(channel))` -> `PinsListResponse`: Lists items pinned to a channel.
+- `pins.remove` -> `client.pins_remove(&PinsRemoveRequest::new(channel))` -> `PinsRemoveResponse`: Un-pins an item from a channel.
+
+## reactions
+
+- `reactions.add` -> `client.reactions_add(&ReactionsAddRequest::new(channel, name, timestamp))` -> `ReactionsAddResponse`: Adds a reaction to an item.
+- `reactions.get` -> `client.reactions_get(&ReactionsGetRequest::new())` -> `ReactionsGetResponse`: Gets reactions for an item.
+- `reactions.list` -> `client.reactions_list(&ReactionsListRequest::new())` -> `ReactionsListResponse`: Lists reactions made by a user.
+- `reactions.remove` -> `client.reactions_remove(&ReactionsRemoveRequest::new(name))` -> `ReactionsRemoveResponse`: Removes a reaction from an item.
+
+## reminders
+
+- `reminders.add` -> `client.reminders_add(&RemindersAddRequest::new(text, time))` -> `RemindersAddResponse`: Creates a reminder.
+- `reminders.complete` -> `client.reminders_complete(&RemindersCompleteRequest::new(reminder))` -> `RemindersCompleteResponse`: Marks a reminder as complete.
+- `reminders.delete` -> `client.reminders_delete(&RemindersDeleteRequest::new(reminder))` -> `RemindersDeleteResponse`: Deletes a reminder.
+- `reminders.info` -> `client.reminders_info(&RemindersInfoRequest::new(reminder))` -> `RemindersInfoResponse`: Gets information about a reminder.
+- `reminders.list` -> `client.reminders_list(&RemindersListRequest::new())` -> `RemindersListResponse`: Lists all reminders created by or for a given user.
+
+## rtm
+
+- `rtm.connect` -> `client.rtm_connect(&RtmConnectRequest::new())` -> `RtmConnectResponse`: Starts a Real Time Messaging session.
+- `rtm.start` -> `client.rtm_start(&RtmStartRequest::new())` -> `RtmStartResponse`: Deprecated: Starts a Real Time Messaging session. Use rtm.connect instead.
+
+## search
+
+- `search.all` -> `client.search_all(&SearchAllRequest::new(query))` -> `SearchAllResponse`: Searches for messages and files matching a query.
+- `search.files` -> `client.search_files(&SearchFilesRequest::new(query))` -> `SearchFilesResponse`: Searches for files matching a query.
+- `search.messages` -> `client.search_messages(&SearchMessagesRequest::new(query))` -> `SearchMessagesResponse`: Searches for messages matching a query.
+
+## slackLists
+
+- `slackLists.access.delete` -> `client.slack_lists_access_delete(&SlackListsAccessDeleteRequest::new(list_id))` -> `SlackListsAccessDeleteResponse`: Revoke access to a List for specified entities.
+- `slackLists.access.set` -> `client.slack_lists_access_set(&SlackListsAccessSetRequest::new(list_id, access_level))` -> `SlackListsAccessSetResponse`: Set the access level to a List for specified entities.
+- `slackLists.create` -> `client.slack_lists_create(&SlackListsCreateRequest::new(name))` -> `SlackListsCreateResponse`: Create a List.
+- `slackLists.download.get` -> `client.slack_lists_download_get(&SlackListsDownloadGetRequest::new(list_id, job_id))` -> `SlackListsDownloadGetResponse`: Retrieve List download URL from an export job to download List contents.
+- `slackLists.download.start` -> `client.slack_lists_download_start(&SlackListsDownloadStartRequest::new(list_id))` -> `SlackListsDownloadStartResponse`: Initiate a job to export List contents.
+- `slackLists.items.create` -> `client.slack_lists_items_create(&SlackListsItemsCreateRequest::new(list_id))` -> `SlackListsItemsCreateResponse`: Add a new item to an existing List.
+- `slackLists.items.delete` -> `client.slack_lists_items_delete(&SlackListsItemsDeleteRequest::new(list_id, id))` -> `SlackListsItemsDeleteResponse`: Deletes an item from an existing List.
+- `slackLists.items.deleteMultiple` -> `client.slack_lists_items_delete_multiple(&SlackListsItemsDeleteMultipleRequest::new(list_id, ids))` -> `SlackListsItemsDeleteMultipleResponse`: Deletes multiple items from an existing List.
+- `slackLists.items.info` -> `client.slack_lists_items_info(&SlackListsItemsInfoRequest::new(list_id, id))` -> `SlackListsItemsInfoResponse`: Get a row from a List.
+- `slackLists.items.list` -> `client.slack_lists_items_list(&SlackListsItemsListRequest::new(list_id))` -> `SlackListsItemsListResponse`: Get records from a List.
+- `slackLists.items.update` -> `client.slack_lists_items_update(&SlackListsItemsUpdateRequest::new(list_id, cells))` -> `SlackListsItemsUpdateResponse`: Updates cells in a List.
+- `slackLists.update` -> `client.slack_lists_update(&SlackListsUpdateRequest::new(id))` -> `SlackListsUpdateResponse`: Update a List.
+
+## stars
+
+- `stars.add` -> `client.stars_add(&StarsAddRequest::new())` -> `StarsAddResponse`: Save an item for later. Formerly known as adding a star.
+- `stars.list` -> `client.stars_list(&StarsListRequest::new())` -> `StarsListResponse`: Listed a user's saved items, formerly known as stars.
+- `stars.remove` -> `client.stars_remove(&StarsRemoveRequest::new())` -> `StarsRemoveResponse`: Removes a saved item (star) from an item.
+
+## team
+
+- `team.accessLogs` -> `client.team_access_logs(&TeamAccessLogsRequest::new())` -> `TeamAccessLogsResponse`: Gets the access logs for the current team.
+- `team.billableInfo` -> `client.team_billable_info(&TeamBillableInfoRequest::new())` -> `TeamBillableInfoResponse`: Gets billable users information for the current team.
+- `team.billing.info` -> `client.team_billing_info(&TeamBillingInfoRequest::new())` -> `TeamBillingInfoResponse`: Reads a workspace's billing plan information.
+- `team.externalTeams.disconnect` -> `client.team_external_teams_disconnect(&TeamExternalTeamsDisconnectRequest::new(target_team))` -> `TeamExternalTeamsDisconnectResponse`: Disconnect an external organization.
+- `team.externalTeams.list` -> `client.team_external_teams_list(&TeamExternalTeamsListRequest::new())` -> `TeamExternalTeamsListResponse`: Returns a list of all the external teams connected and details about the connection.
+- `team.info` -> `client.team_info(&TeamInfoRequest::new())` -> `TeamInfoResponse`: Gets information about the current team.
+- `team.integrationLogs` -> `client.team_integration_logs(&TeamIntegrationLogsRequest::new())` -> `TeamIntegrationLogsResponse`: Gets the integration logs for the current team.
+- `team.preferences.list` -> `client.team_preferences_list(&TeamPreferencesListRequest::new())` -> `TeamPreferencesListResponse`: Retrieve a list of a workspace's team preferences.
+- `team.profile.get` -> `client.team_profile_get(&TeamProfileGetRequest::new())` -> `TeamProfileGetResponse`: Retrieve a team's profile.
+
+## tooling
+
+- `tooling.tokens.rotate` -> `client.tooling_tokens_rotate(&ToolingTokensRotateRequest::new(refresh_token))` -> `ToolingTokensRotateResponse`: Exchanges a refresh token for a new app configuration token.
+
+## usergroups
+
+- `usergroups.create` -> `client.usergroups_create(&UsergroupsCreateRequest::new(name))` -> `UsergroupsCreateResponse`: Create a User Group.
+- `usergroups.disable` -> `client.usergroups_disable(&UsergroupsDisableRequest::new(usergroup))` -> `UsergroupsDisableResponse`: Disable an existing User Group.
+- `usergroups.enable` -> `client.usergroups_enable(&UsergroupsEnableRequest::new(usergroup))` -> `UsergroupsEnableResponse`: Enable a User Group.
+- `usergroups.list` -> `client.usergroups_list(&UsergroupsListRequest::new())` -> `UsergroupsListResponse`: List all User Groups for a team.
+- `usergroups.update` -> `client.usergroups_update(&UsergroupsUpdateRequest::new(usergroup))` -> `UsergroupsUpdateResponse`: Update an existing User Group.
+- `usergroups.users.list` -> `client.usergroups_users_list(&UsergroupsUsersListRequest::new(usergroup))` -> `UsergroupsUsersListResponse`: List all users in a User Group.
+- `usergroups.users.update` -> `client.usergroups_users_update(&UsergroupsUsersUpdateRequest::new(usergroup, users))` -> `UsergroupsUsersUpdateResponse`: Update the list of users for a user group.
+
+## users
+
+- `users.conversations` -> `client.users_conversations(&UsersConversationsRequest::new())` -> `UsersConversationsResponse`: List conversations the calling user is a member of.
+- `users.deletePhoto` -> `client.users_delete_photo(&UsersDeletePhotoRequest::new())` -> `UsersDeletePhotoResponse`: Delete the user profile photo
+- `users.discoverableContacts.lookup` -> `client.users_discoverable_contacts_lookup(&UsersDiscoverableContactsLookupRequest::new(email))` -> `UsersDiscoverableContactsLookupResponse`: Look up an email address to see if someone is discoverable on Slack
+- `users.getPresence` -> `client.users_get_presence(&UsersGetPresenceRequest::new())` -> `UsersGetPresenceResponse`: Gets user presence information.
+- `users.identity` -> `client.users_identity(&UsersIdentityRequest::new())` -> `UsersIdentityResponse`: Get a user's identity.
+- `users.info` -> `client.users_info(&UsersInfoRequest::new())` -> `UsersInfoResponse`: Gets information about a user.
+- `users.list` -> `client.users_list(&UsersListRequest::new())` -> `UsersListResponse`: Lists all users in a Slack team.
+- `users.lookupByEmail` -> `client.users_lookup_by_email(&UsersLookupByEmailRequest::new(email))` -> `UsersLookupByEmailResponse`: Find a user with an email address.
+- `users.profile.get` -> `client.users_profile_get(&UsersProfileGetRequest::new())` -> `UsersProfileGetResponse`: Retrieve a user's profile information, including their custom status.
+- `users.profile.set` -> `client.users_profile_set(&UsersProfileSetRequest::new())` -> `UsersProfileSetResponse`: Set a user's profile information, including custom status.
+- `users.setActive` -> `client.users_set_active(&UsersSetActiveRequest::new())` -> `UsersSetActiveResponse`: Marked a user as active. Deprecated and non-functional.
+- `users.setPhoto` -> `client.users_set_photo(&UsersSetPhotoRequest::new())` -> `UsersSetPhotoResponse`: Set the user profile photo
+- `users.setPresence` -> `client.users_set_presence(&UsersSetPresenceRequest::new(presence))` -> `UsersSetPresenceResponse`: Manually sets user presence.
+
+## views
+
+- `views.open` -> `client.views_open(&ViewsOpenRequest::new(view))` -> `ViewsOpenResponse`: Open a view for a user.
+- `views.publish` -> `client.views_publish(&ViewsPublishRequest::new(user_id, view))` -> `ViewsPublishResponse`: Publish a static view for a User.
+- `views.push` -> `client.views_push(&ViewsPushRequest::new(view))` -> `ViewsPushResponse`: Push a view onto the stack of a root view.
+- `views.update` -> `client.views_update(&ViewsUpdateRequest::new(view))` -> `ViewsUpdateResponse`: Update an existing view.
+
+## workflows
+
+- `workflows.featured.add` -> `client.workflows_featured_add(&WorkflowsFeaturedAddRequest::new(channel_id, trigger_ids))` -> `WorkflowsFeaturedAddResponse`: Add featured workflows to a channel.
+- `workflows.featured.list` -> `client.workflows_featured_list(&WorkflowsFeaturedListRequest::new(channel_ids))` -> `WorkflowsFeaturedListResponse`: List the featured workflows for specified channels.
+- `workflows.featured.remove` -> `client.workflows_featured_remove(&WorkflowsFeaturedRemoveRequest::new(channel_id, trigger_ids))` -> `WorkflowsFeaturedRemoveResponse`: Remove featured workflows from a channel.
+- `workflows.featured.set` -> `client.workflows_featured_set(&WorkflowsFeaturedSetRequest::new(channel_id, trigger_ids))` -> `WorkflowsFeaturedSetResponse`: Set featured workflows for a channel.
+- `workflows.triggers.permissions.add` -> `client.workflows_triggers_permissions_add(&WorkflowsTriggersPermissionsAddRequest::new(trigger_id))` -> `WorkflowsTriggersPermissionsAddResponse`: Allows users to run a trigger that has its permission type set to named_entities
+- `workflows.triggers.permissions.list` -> `client.workflows_triggers_permissions_list(&WorkflowsTriggersPermissionsListRequest::new(trigger_id))` -> `WorkflowsTriggersPermissionsListResponse`: Returns the permission type of a trigger and if applicable, includes the entities that have been granted access
+- `workflows.triggers.permissions.remove` -> `client.workflows_triggers_permissions_remove(&WorkflowsTriggersPermissionsRemoveRequest::new(trigger_id))` -> `WorkflowsTriggersPermissionsRemoveResponse`: Revoke an entity's access to a trigger that has its permission type set to named_entities
+- `workflows.triggers.permissions.set` -> `client.workflows_triggers_permissions_set(&WorkflowsTriggersPermissionsSetRequest::new(trigger_id, permission_type))` -> `WorkflowsTriggersPermissionsSetResponse`: Set the permission type for who can run a trigger

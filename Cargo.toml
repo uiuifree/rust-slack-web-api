@@ -1,23 +1,27 @@
 [package]
 name = "slack-web-api"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
-
 authors = ["uiuifree"]
-description = "SlackWebAPI for Rust"
+description = "Typed async Slack Web API client for Rust: all 330 methods incl. admin, Block Kit, pagination, file upload, rate-limit retry (reqwest + rustls, no OpenSSL)"
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/uiuifree/rust-slack-web-api"
+repository = "https://github.com/uiuifree/rust-slack-web-api"
+documentation = "https://docs.rs/slack-web-api"
+keywords = ["slack", "slack-api", "block-kit", "chat", "bot"]
+categories = ["api-bindings", "web-programming::http-client", "asynchronous"]
+exclude = ["codegen/", ".idea/", ".github/", "AGENTS.md"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-keywords = ["Slack", "SlackWebAPI"]
 [dependencies]
-#reqwest = { version = "0.11", features = ["json"] }
-# Json
-serde = { version = "~1" }
-serde_json = "~1"
-serde_derive = "~1"
-hyper = { version = "0.14", features = ["http2", "stream"] }
-hyper-tls = "0.5.0"
+bytes = "1"
+form_urlencoded = "1"
+reqwest = { version = "0.13", default-features = false, features = ["rustls", "http2", "gzip"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["time", "rt"] }
 
-mpart-async = { version = "0.7" }
 [dev-dependencies]
-tokio = { version = "1.19.2", features = ["full"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+wiremock = "0.6"
